@@ -1,0 +1,17 @@
+{
+  "name": "cheapgen",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Send each AI video or image generation request to the cheapest connected provider (Kie, Replicate, WaveSpeed, fal).",
+  "type": "module",
+  "bin": {
+    "cheapgen": "./bin/cheapgen.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,27 @@
+# Dependencies and build output
+node_modules/
+coverage/
+*.tgz
+
+# Generated media (default download folder)
+cheapgen-out/
+
+# Local config and secrets: never commit API keys
+.cheapgen.json
+.env
+.env.*
+!.env.example
+*.key
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local working notes, kept out of the repo
+AGENTS.md
+CLAUDE.md
+TASKS.md
+docs/features/
+.claude/
