@@ -1,0 +1,4 @@
+{
+  "_synthetic": "built from the provider docs; replace with a recorded response",
+  "error": { "type": "authorization_error", "message": "Key does not have billing:usage:read permission" }
+}

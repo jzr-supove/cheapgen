@@ -1,0 +1,497 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "provider": "kie",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.019
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.041
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.04
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.09
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.054
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.108
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.0721
+      },
+      "sourceUrl": "https://example.test/pricing/fal",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.0-mini",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.1547
+      },
+      "sourceUrl": "https://example.test/pricing/fal",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.095
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.205
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "1080p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.51
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.08
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.18
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "1080p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.45
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.108
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.216
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "1080p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.54
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.14
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.315
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "1080p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.79
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.1028
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.2312
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.162
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.324
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "1080p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.81
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.5-flash",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.0925
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "kie",
+      "model": "seedance-2.5-flash",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.205
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.5-flash",
+      "mode": "*",
+      "when": {
+        "resolution": "480p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.1345
+      },
+      "sourceUrl": "https://example.test/pricing/fal",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.5-flash",
+      "mode": "*",
+      "when": {
+        "resolution": "720p"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 0.3024
+      },
+      "sourceUrl": "https://example.test/pricing/fal",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": [
+          "480p",
+          "720p",
+          "1080p"
+        ]
+      },
+      "pricing": {
+        "type": "perToken",
+        "usdPer1kTokens": 0.014,
+        "fps": 24
+      },
+      "sourceUrl": "https://example.test/pricing/fal",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": [
+          "480p",
+          "720p",
+          "1080p"
+        ]
+      },
+      "pricing": {
+        "type": "perToken",
+        "usdPer1kTokens": 0.014,
+        "fps": 24
+      },
+      "sourceUrl": "https://example.test/pricing/fal",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "kie",
+      "model": "seedream-5-lite",
+      "mode": "text-to-image",
+      "when": {},
+      "pricing": {
+        "type": "perImage",
+        "usd": 0.0275
+      },
+      "sourceUrl": "https://example.test/pricing/kie",
+      "verifiedOn": "2026-11-18"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedream-5-lite",
+      "mode": "text-to-image",
+      "when": {},
+      "pricing": {
+        "type": "perImage",
+        "usd": 0.035
+      },
+      "sourceUrl": "https://example.test/pricing/replicate",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "wavespeed",
+      "model": "seedream-5-lite",
+      "mode": "text-to-image",
+      "when": {},
+      "pricing": {
+        "type": "perImage",
+        "usd": 0.035
+      },
+      "sourceUrl": "https://example.test/pricing/wavespeed",
+      "verifiedOn": "2026-11-10"
+    },
+    {
+      "provider": "fal",
+      "model": "seedream-5-lite",
+      "mode": "text-to-image",
+      "when": {},
+      "pricing": {
+        "type": "perImage",
+        "usd": 0.035
+      },
+      "sourceUrl": "https://example.test/pricing/fal",
+      "verifiedOn": "2026-11-10"
+    }
+  ]
+}

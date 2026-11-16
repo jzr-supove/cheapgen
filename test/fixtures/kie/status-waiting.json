@@ -1,0 +1,4 @@
+{
+  "_synthetic": "built from the provider docs; replace with a recorded response",
+  "code": 200, "msg": "success", "data": { "taskId": "task_kie_001", "state": "waiting", "resultJson": "", "failCode": "", "failMsg": "" }
+}

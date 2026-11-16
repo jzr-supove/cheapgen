@@ -1,0 +1,4 @@
+{
+  "_synthetic": "built from the provider docs; replace with a recorded response",
+  "code": 429, "msg": "Rate limit exceeded", "data": null
+}

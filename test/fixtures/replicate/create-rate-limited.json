@@ -1,0 +1,4 @@
+{
+  "_synthetic": "built from the provider docs; replace with a recorded response",
+  "title": "Too many requests", "detail": "Request was throttled.", "status": 429
+}

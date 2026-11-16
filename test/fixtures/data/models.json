@@ -1,0 +1,227 @@
+{
+  "seedance-2.0-mini": {
+    "kind": "video",
+    "frameSeries": "seedance-2.0",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 15
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2-mini"
+      },
+      "replicate": {
+        "id": "bytedance/seedance-2.0-mini"
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.0-mini",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.0/mini",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      }
+    }
+  },
+  "seedance-2.0": {
+    "kind": "video",
+    "frameSeries": "seedance-2.0",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p",
+      "1080p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 15
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2"
+      },
+      "replicate": {
+        "id": "bytedance/seedance-2.0"
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.0",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.0",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      }
+    }
+  },
+  "seedance-2.5": {
+    "kind": "video",
+    "frameSeries": "seedance-2.5",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p",
+      "1080p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 15
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2-5"
+      },
+      "replicate": {
+        "id": "bytedance/seedance-2.5",
+        "resolutions": [
+          "480p",
+          "720p"
+        ]
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.5",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.5",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      }
+    }
+  },
+  "seedance-2.5-flash": {
+    "kind": "video",
+    "frameSeries": "seedance-2.5",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 15
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2-5-flash"
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.5-flash",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.5/flash",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        }
+      }
+    }
+  },
+  "seedream-5-lite": {
+    "kind": "image",
+    "modes": [
+      "text-to-image"
+    ],
+    "sizes": [
+      "1K",
+      "2K",
+      "4K"
+    ],
+    "aspectRatios": [
+      "1:1",
+      "16:9",
+      "9:16",
+      "4:3",
+      "3:4"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedream-5-lite"
+      },
+      "replicate": {
+        "id": "bytedance/seedream-5-lite"
+      },
+      "wavespeed": {
+        "id": "bytedance/seedream-v5.0-lite",
+        "modes": {
+          "text-to-image": "text-to-image"
+        }
+      },
+      "fal": {
+        "id": "fal-ai/bytedance/seedream/v5/lite",
+        "modes": {
+          "text-to-image": "text-to-image"
+        }
+      }
+    }
+  }
+}
