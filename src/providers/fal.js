@@ -3,27 +3,29 @@
 // The balance needs a key with billing:usage:read; without it the balance is unknown.
 import { http, describeBody } from '../http.js';
 import { SubmitUnknown } from './errors.js';
-import { postJob, getJson, fileBlob, asRejection, videoFields } from './common.js';
+import { postJob, getJson, fileBlob, asRejection, videoFields, imageFields, endpointPath } from './common.js';
 import { cost } from '../pricing/formulas.js';
 import { pricedRequest } from '../request.js';
 
 const QUEUE = 'https://queue.fal.run';
 const API = 'https://api.fal.ai/v1';
-const STORAGE = 'https://rest.alpha.fal.ai/storage/upload/initiate?storage_type=fal-cdn-v3';
+const STORAGE = 'https://rest.fal.ai/storage/upload/initiate?storage_type=fal-cdn-v3';
 const auth = (ctx) => ({ Authorization: `Key ${ctx.key}` });
 
-const endpointOf = (r, entry) => `${entry.id}/${entry.modes?.[r.mode] ?? r.mode}`;
+const endpointOf = endpointPath;
 
 /** fal's queue status URLs use the app id: the first two segments of the endpoint. */
 const appIdOf = (endpoint) => endpoint.split('/').slice(0, 2).join('/');
 
 /** Maps a unit price from fal's pricing API onto our bundled formula. */
-function liveToPricing(unit, unitPrice, bundledPricing) {
+export function liveToPricing(unit, unitPrice, bundledPricing) {
   const u = String(unit ?? '').toLowerCase();
   if (/^(second|seconds|sec)$/.test(u)) return { type: 'perSecond', usd: unitPrice };
   if (/^(image|images)$/.test(u)) return { type: 'perImage', usd: unitPrice };
   if (/token/.test(u) && bundledPricing?.type === 'perToken') {
-    const per1k = /1m|million/.test(u) ? unitPrice / 1000 : /1k|thousand/.test(u) ? unitPrice : null;
+    // fal's units look like "1000 tokens" or "1m tokens" (fal.ai/pricing.md).
+    const per1k = /\b(1m|1 ?million|1,?000,?000)\b/.test(u) ? unitPrice / 1000
+      : /\b(1k|1,?000|thousand)\b/.test(u) ? unitPrice : null;
     return per1k === null ? null : { ...bundledPricing, usdPer1kTokens: per1k };
   }
   return null;
@@ -37,19 +39,25 @@ export default {
 
   buildRequest(r, { entry, imageUrl }) {
     const body = r.kind === 'image'
-      ? { prompt: r.prompt, aspect_ratio: r.aspectRatio, resolution: r.size }
-      : { prompt: r.prompt, ...videoFields(r, { durationAsString: true }), ...(imageUrl ? { image_url: imageUrl } : {}) };
+      ? { prompt: r.prompt, ...imageFields(r, entry, 'resolution') }
+      : { prompt: r.prompt, ...videoFields(r, { durationAsString: true, entry }), ...(imageUrl ? { image_url: imageUrl } : {}) };
     return { method: 'POST', url: `${QUEUE}/${endpointOf(r, entry)}`, body };
   },
 
-  async livePrice(r, ctx, { entry, bundled, frameSizes }) {
-    const endpoint = endpointOf(r, entry);
+  /** fal's unit price for an endpoint: `{ unit, unitPrice }`, or null. */
+  async unitPrice(endpoint, ctx) {
     const res = await http(ctx, { url: `${API}/models/pricing?endpoint_id=${encodeURIComponent(endpoint)}`,
       headers: auth(ctx), timeoutMs: 10_000 });
     if (!res.ok) return null;
     const p = (res.json?.prices ?? []).find((x) => x.endpoint_id === endpoint) ?? res.json?.prices?.[0];
     if (!p || typeof p.unit_price !== 'number' || (p.currency && p.currency !== 'USD')) return null;
-    const pricing = liveToPricing(p.unit, p.unit_price, bundled?.entry?.pricing);
+    return { unit: p.unit, unitPrice: p.unit_price };
+  },
+
+  async livePrice(r, ctx, { entry, bundled, frameSizes }) {
+    const p = await this.unitPrice(endpointOf(r, entry), ctx);
+    if (!p) return null;
+    const pricing = liveToPricing(p.unit, p.unitPrice, bundled?.entry?.pricing);
     if (!pricing) return null;
     return { usd: cost(pricing, pricedRequest(r), frameSizes), unit: p.unit };
   },
@@ -62,12 +70,12 @@ export default {
 
   async upload(filePath, ctx) {
     return asRejection('the image to fal', async () => {
-      const { blob, name } = fileBlob(filePath);
+      const { blob, name, type } = fileBlob(filePath);
       const init = await http(ctx, { method: 'POST', url: STORAGE, headers: auth(ctx), timeoutMs: 30_000,
-        json: { content_type: 'application/octet-stream', file_name: name } });
+        json: { content_type: type, file_name: name } });
       if (!init.ok || !init.json?.upload_url) throw new Error(`HTTP ${init.status}: ${describeBody(init)}`);
       const put = await http(ctx, { method: 'PUT', url: init.json.upload_url, body: blob, timeoutMs: 300_000,
-        headers: { 'Content-Type': 'application/octet-stream' } });
+        headers: { 'Content-Type': type } });
       if (!put.ok) throw new Error(`HTTP ${put.status}: ${describeBody(put)}`);
       return init.json.file_url;
     });
@@ -94,6 +102,10 @@ export default {
     const s = await getJson(ctx, statusUrl, auth(ctx));
     if (s?.status === 'IN_QUEUE') return { state: 'queued', outputs: [] };
     if (s?.status !== 'COMPLETED') return { state: 'running', outputs: [] };
+    // A failed or cancelled request also reports COMPLETED, with an error field.
+    if (s.error) {
+      return { state: 'failed', outputs: [], error: { code: s.error_type ?? null, message: String(s.error), providerFault: false } };
+    }
     const res = await http(ctx, { url: responseUrl, headers: auth(ctx), timeoutMs: 30_000 });
     if (!res.ok) {
       return { state: 'failed', outputs: [], error: { code: String(res.status), message: describeBody(res), providerFault: res.status >= 500 } };

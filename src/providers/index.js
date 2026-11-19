@@ -15,7 +15,7 @@ export function supports(catalog, providerId, r) {
   const entry = catalog.models[r.model]?.providers?.[providerId];
   const no = (reason) => ({ ok: false, reason: `${providerId} ${reason}` });
   if (!entry) return no(`doesn't offer ${r.model}`);
-  if (entry.modes && !entry.modes[r.mode]) return no(`doesn't offer ${r.model} as ${r.mode}`);
+  if (entry.modes && typeof entry.modes[r.mode] !== 'string') return no(`doesn't offer ${r.model} as ${r.mode}`);
   if (r.resolution && entry.resolutions && !entry.resolutions.includes(r.resolution)) {
     return no(`doesn't offer ${r.model} at ${r.resolution}`);
   }

@@ -1,0 +1,2 @@
+{ "_synthetic": "built from the provider docs; replace with a recorded response",
+  "id": "file_001", "urls": { "get": "https://api.replicate.com/v1/files/file_001/download" } }

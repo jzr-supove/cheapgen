@@ -2,20 +2,21 @@
 // WaveSpeed refunds jobs that fail on its side, and has balance and price APIs.
 import { http, describeBody } from '../http.js';
 import { SubmitRejected, SubmitUnknown } from './errors.js';
-import { postJob, getJson, fileBlob, asRejection, videoFields } from './common.js';
+import { postJob, getJson, fileBlob, asRejection, videoFields, imageFields, endpointPath } from './common.js';
 import { pricedRequest } from '../request.js';
 
 const BASE = 'https://api.wavespeed.ai/api/v3';
 const auth = (ctx) => ({ Authorization: `Bearer ${ctx.key}` });
 
-const STATES = { created: 'queued', pending: 'queued', processing: 'running', completed: 'succeeded', failed: 'failed' };
+const STATES = { created: 'queued', pending: 'queued', processing: 'running', completed: 'succeeded', failed: 'failed',
+  cancelled: 'cancelled', timeout: 'failed', deleted: 'failed' };
 
-const modelPath = (r, entry) => `${entry.id}/${entry.modes?.[r.mode] ?? r.mode}`;
+const modelPath = endpointPath;
 
-function body(r, imageUrl) {
+function body(r, entry, imageUrl) {
   return r.kind === 'image'
-    ? { prompt: r.prompt, aspect_ratio: r.aspectRatio, size: r.size }
-    : { prompt: r.prompt, ...videoFields(r), ...(imageUrl ? { image: imageUrl } : {}) };
+    ? { prompt: r.prompt, ...imageFields(r, entry, 'size') }
+    : { prompt: r.prompt, ...videoFields(r, { entry }), ...(imageUrl ? { image: imageUrl } : {}) };
 }
 
 export default {
@@ -25,14 +26,16 @@ export default {
   billing: { failedJobCharged: false, validationErrorMayCharge: false },
 
   buildRequest(r, { entry, imageUrl }) {
-    return { method: 'POST', url: `${BASE}/${modelPath(r, entry)}`, body: body(r, imageUrl) };
+    return { method: 'POST', url: `${BASE}/${modelPath(r, entry)}`, body: body(r, entry, imageUrl) };
   },
 
   async livePrice(r, ctx, { entry }) {
     const priced = pricedRequest(r);
     const res = await http(ctx, { method: 'POST', url: `${BASE}/model/price`, headers: auth(ctx), timeoutMs: 10_000,
-      json: { model_id: modelPath(priced, entry), inputs: body(priced) } });
-    const price = res.ok && res.json?.code === 200 ? res.json.data?.price : null;
+      json: { model_id: modelPath(priced, entry), input: body(priced, entry) } });
+    const data = res.ok && res.json?.code === 200 ? res.json.data : null;
+    // discounted_price is what the account pays; price is the list price.
+    const price = typeof data?.discounted_price === 'number' ? data.discounted_price : data?.price;
     return typeof price === 'number' ? { usd: price, unit: 'request' } : null;
   },
 

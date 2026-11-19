@@ -2,7 +2,7 @@
 // Replicate has no balance or price API.
 import { http, describeBody } from '../http.js';
 import { SubmitUnknown } from './errors.js';
-import { postJob, getJson, fileBlob, asRejection, videoFields } from './common.js';
+import { postJob, getJson, fileBlob, asRejection, videoFields, imageFields } from './common.js';
 
 const BASE = 'https://api.replicate.com/v1';
 const auth = (ctx) => ({ Authorization: `Bearer ${ctx.key}` });
@@ -17,8 +17,8 @@ export default {
 
   buildRequest(r, { entry, imageUrl }) {
     const input = r.kind === 'image'
-      ? { prompt: r.prompt, aspect_ratio: r.aspectRatio, size: r.size }
-      : { prompt: r.prompt, ...videoFields(r), ...(imageUrl ? { image: imageUrl } : {}) };
+      ? { prompt: r.prompt, ...imageFields(r, entry, 'size') }
+      : { prompt: r.prompt, ...videoFields(r, { entry }), ...(imageUrl ? { image: imageUrl } : {}) };
     return { method: 'POST', url: `${BASE}/models/${entry.id}/predictions`, body: { input } };
   },
 
@@ -28,9 +28,11 @@ export default {
 
   async upload(filePath, ctx) {
     return asRejection('the image to Replicate', async () => {
-      const { blob, name } = fileBlob(filePath);
+      const { blob, name, type } = fileBlob(filePath);
       const form = new FormData();
       form.append('content', blob, name);
+      form.append('filename', name);
+      form.append('type', type);
       const res = await http(ctx, { method: 'POST', url: `${BASE}/files`, headers: auth(ctx), body: form, timeoutMs: 300_000 });
       if (!res.ok) throw new Error(`HTTP ${res.status}: ${describeBody(res)}`);
       return res.json?.urls?.get;

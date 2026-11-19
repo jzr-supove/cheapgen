@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { usageError } from './errors.js';
+import { frameSize } from './pricing/formulas.js';
 
 /**
  * @typedef {object} CanonicalRequest
@@ -72,8 +73,11 @@ export function buildCanonicalRequest(modelId, flags, catalog, { cwd, requirePro
     if (model.sizes && !model.sizes.includes(size)) {
       throw usageError(`${modelId} doesn't support size ${size}. Choose one of: ${model.sizes.join(', ')}`);
     }
-    return withMode(model, { model: modelId, kind: 'image', frameSeries: model.frameSeries ?? modelId,
-      mode: 'text-to-image', prompt, size, aspectRatio, count: 1 });
+    const frameSeries = model.frameSeries ?? modelId;
+    // Pixels for providers that take explicit sizes; null when the model has no table.
+    const pixels = frameSize({ frameSeries, size, aspectRatio }, catalog.frameSizes);
+    return withMode(model, { model: modelId, kind: 'image', frameSeries,
+      mode: 'text-to-image', prompt, size, aspectRatio, pixels, count: 1 });
   }
 
   if (flags.size !== undefined) throw usageError('--size applies to image models; use --res for video');

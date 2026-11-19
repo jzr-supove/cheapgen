@@ -1,0 +1,2 @@
+{ "_synthetic": "built from the provider docs; replace with a recorded response",
+  "code": 200, "message": "success", "data": { "id": "ws_task_001", "status": "cancelled", "outputs": [] } }

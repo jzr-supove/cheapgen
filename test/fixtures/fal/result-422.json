@@ -1,0 +1,2 @@
+{ "_synthetic": "built from the provider docs; replace with a recorded response",
+  "detail": [ { "loc": ["body", "prompt"], "msg": "prompt rejected by the content checker", "type": "content_policy_violation" } ] }
