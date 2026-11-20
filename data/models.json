@@ -1,0 +1,677 @@
+{
+  "seedance-2.0-mini": {
+    "kind": "video",
+    "frameSeries": "seedance-2.0",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 15
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2-mini"
+      },
+      "replicate": {
+        "id": "bytedance/seedance-2.0-mini"
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.0-mini",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": null
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.0/mini",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": "auto"
+        }
+      }
+    }
+  },
+  "seedance-2.0-fast": {
+    "kind": "video",
+    "frameSeries": "seedance-2.0",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 15
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2-fast"
+      },
+      "replicate": {
+        "id": "bytedance/seedance-2.0-fast"
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.0-fast",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": null
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.0/fast",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": "auto"
+        }
+      }
+    }
+  },
+  "seedance-2.0": {
+    "kind": "video",
+    "frameSeries": "seedance-2.0",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p",
+      "1080p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 15
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2"
+      },
+      "replicate": {
+        "id": "bytedance/seedance-2.0"
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.0",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": null
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.0",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": "auto"
+        }
+      }
+    }
+  },
+  "seedance-2.5-flash": {
+    "kind": "video",
+    "frameSeries": "seedance-2.5",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 30
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2-5-flash",
+        "request": {
+          "imageToVideoAspect": "adaptive"
+        }
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.5-flash",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": null
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.5/flash",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": "auto"
+        }
+      }
+    }
+  },
+  "seedance-2.5": {
+    "kind": "video",
+    "frameSeries": "seedance-2.5",
+    "modes": [
+      "text-to-video",
+      "image-to-video"
+    ],
+    "resolutions": [
+      "480p",
+      "720p",
+      "1080p"
+    ],
+    "durations": {
+      "min": 4,
+      "max": 30
+    },
+    "aspectRatios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "4:3",
+      "3:4",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "bytedance/seedance-2-5",
+        "request": {
+          "imageToVideoAspect": "adaptive"
+        }
+      },
+      "replicate": {
+        "id": "bytedance/seedance-2.5",
+        "resolutions": [
+          "480p",
+          "720p"
+        ],
+        "request": {
+          "imageToVideoAspect": "adaptive"
+        }
+      },
+      "wavespeed": {
+        "id": "bytedance/seedance-2.5",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": null
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedance-2.5",
+        "modes": {
+          "text-to-video": "text-to-video",
+          "image-to-video": "image-to-video"
+        },
+        "request": {
+          "imageToVideoAspect": "auto"
+        }
+      }
+    }
+  },
+  "seedream-5.5": {
+    "kind": "image",
+    "modes": [
+      "text-to-image"
+    ],
+    "sizes": [
+      "1K",
+      "1.5K",
+      "2K"
+    ],
+    "aspectRatios": [
+      "1:1",
+      "16:9",
+      "9:16",
+      "4:3",
+      "3:4",
+      "3:2",
+      "2:3",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "seedream/5-5-text-to-image",
+        "request": {
+          "size": {
+            "field": "size"
+          }
+        }
+      },
+      "wavespeed": {
+        "id": "bytedance/seedream-v5.5",
+        "modes": {
+          "text-to-image": ""
+        },
+        "request": {
+          "size": {
+            "field": "resolution",
+            "values": {
+              "1K": "1k",
+              "1.5K": "1.5k",
+              "2K": "2k"
+            }
+          }
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedream/v5.5",
+        "modes": {
+          "text-to-image": "text-to-image"
+        },
+        "request": {
+          "size": {
+            "field": "image_size",
+            "pixels": "object"
+          },
+          "aspect": false
+        }
+      }
+    }
+  },
+  "seedream-5-pro": {
+    "kind": "image",
+    "modes": [
+      "text-to-image"
+    ],
+    "sizes": [
+      "1K",
+      "2K"
+    ],
+    "aspectRatios": [
+      "1:1",
+      "16:9",
+      "9:16",
+      "4:3",
+      "3:4",
+      "3:2",
+      "2:3",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "seedream/5-pro-text-to-image",
+        "request": {
+          "size": {
+            "field": "quality",
+            "values": {
+              "1K": "basic",
+              "2K": "high"
+            }
+          }
+        }
+      },
+      "replicate": {
+        "id": "bytedance/seedream-5-pro",
+        "request": {
+          "size": {
+            "field": "size"
+          }
+        }
+      },
+      "wavespeed": {
+        "id": "bytedance/seedream-v5.0-pro",
+        "modes": {
+          "text-to-image": ""
+        },
+        "request": {
+          "size": {
+            "field": "resolution",
+            "values": {
+              "1K": "1k",
+              "2K": "2k"
+            }
+          }
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedream/v5/pro",
+        "modes": {
+          "text-to-image": "text-to-image"
+        },
+        "request": {
+          "size": {
+            "field": "image_size",
+            "pixels": "object"
+          },
+          "aspect": false
+        }
+      }
+    }
+  },
+  "seedream-5-lite": {
+    "kind": "image",
+    "modes": [
+      "text-to-image"
+    ],
+    "sizes": [
+      "2K",
+      "3K",
+      "4K"
+    ],
+    "aspectRatios": [
+      "1:1",
+      "16:9",
+      "9:16",
+      "4:3",
+      "3:4",
+      "3:2",
+      "2:3",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "seedream/5-lite-text-to-image",
+        "request": {
+          "size": {
+            "field": "quality",
+            "values": {
+              "2K": "basic",
+              "3K": "high",
+              "4K": "ultra"
+            }
+          }
+        }
+      },
+      "replicate": {
+        "id": "bytedance/seedream-5-lite",
+        "sizes": [
+          "2K",
+          "3K"
+        ],
+        "request": {
+          "size": {
+            "field": "size"
+          }
+        }
+      },
+      "wavespeed": {
+        "id": "bytedance/seedream-v5.0-lite",
+        "modes": {
+          "text-to-image": ""
+        },
+        "request": {
+          "size": {
+            "field": "size",
+            "pixels": "W*H"
+          },
+          "aspect": false
+        }
+      },
+      "fal": {
+        "id": "bytedance/seedream/v5/lite",
+        "modes": {
+          "text-to-image": "text-to-image"
+        },
+        "request": {
+          "size": {
+            "field": "image_size",
+            "pixels": "object"
+          },
+          "aspect": false
+        }
+      }
+    }
+  },
+  "nano-banana-2.1": {
+    "kind": "image",
+    "modes": [
+      "text-to-image"
+    ],
+    "sizes": [
+      "1K",
+      "2K",
+      "4K"
+    ],
+    "aspectRatios": [
+      "1:1",
+      "16:9",
+      "9:16",
+      "4:3",
+      "3:4",
+      "3:2",
+      "2:3",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "nano-banana-2-1",
+        "request": {
+          "size": {
+            "field": "resolution"
+          }
+        }
+      },
+      "replicate": {
+        "id": "google/nano-banana-2.1",
+        "request": {
+          "size": {
+            "field": "resolution"
+          }
+        }
+      },
+      "wavespeed": {
+        "id": "google/nano-banana-2.1",
+        "modes": {
+          "text-to-image": "text-to-image"
+        },
+        "request": {
+          "size": {
+            "field": "resolution",
+            "values": {
+              "1K": "1k",
+              "2K": "2k",
+              "4K": "4k"
+            }
+          }
+        }
+      },
+      "fal": {
+        "id": "google/nano-banana-2.1",
+        "modes": {
+          "text-to-image": ""
+        },
+        "request": {
+          "size": {
+            "field": "resolution"
+          }
+        }
+      }
+    }
+  },
+  "nano-banana-pro": {
+    "kind": "image",
+    "modes": [
+      "text-to-image"
+    ],
+    "sizes": [
+      "1K",
+      "2K",
+      "4K"
+    ],
+    "aspectRatios": [
+      "1:1",
+      "16:9",
+      "9:16",
+      "4:3",
+      "3:4",
+      "3:2",
+      "2:3",
+      "21:9"
+    ],
+    "providers": {
+      "kie": {
+        "id": "nano-banana-pro",
+        "request": {
+          "size": {
+            "field": "resolution"
+          }
+        }
+      },
+      "replicate": {
+        "id": "google/nano-banana-pro",
+        "request": {
+          "size": {
+            "field": "resolution"
+          }
+        }
+      },
+      "wavespeed": {
+        "id": "google/nano-banana-pro",
+        "modes": {
+          "text-to-image": "text-to-image"
+        },
+        "request": {
+          "size": {
+            "field": "resolution",
+            "values": {
+              "1K": "1k",
+              "2K": "2k",
+              "4K": "4k"
+            }
+          }
+        }
+      },
+      "fal": {
+        "id": "fal-ai/nano-banana-pro",
+        "modes": {
+          "text-to-image": ""
+        },
+        "request": {
+          "size": {
+            "field": "resolution"
+          }
+        }
+      }
+    }
+  },
+  "flux-2-pro": {
+    "kind": "image",
+    "modes": [
+      "text-to-image"
+    ],
+    "sizes": [
+      "1K",
+      "2K"
+    ],
+    "aspectRatios": [
+      "1:1",
+      "16:9",
+      "9:16",
+      "4:3",
+      "3:4",
+      "3:2",
+      "2:3"
+    ],
+    "providers": {
+      "kie": {
+        "id": "flux-2/pro-text-to-image",
+        "request": {
+          "size": {
+            "field": "resolution"
+          }
+        }
+      },
+      "replicate": {
+        "id": "black-forest-labs/flux-2-pro",
+        "request": {
+          "size": {
+            "field": "resolution",
+            "values": {
+              "1K": "1 MP",
+              "2K": "4 MP"
+            }
+          }
+        }
+      },
+      "wavespeed": {
+        "id": "wavespeed-ai/flux-2-pro",
+        "modes": {
+          "text-to-image": "text-to-image"
+        },
+        "request": {
+          "size": {
+            "field": "size",
+            "pixels": "W*H"
+          },
+          "aspect": false
+        }
+      },
+      "fal": {
+        "id": "fal-ai/flux-2-pro",
+        "modes": {
+          "text-to-image": ""
+        },
+        "request": {
+          "size": {
+            "field": "image_size",
+            "pixels": "object"
+          },
+          "aspect": false
+        }
+      }
+    }
+  }
+}
