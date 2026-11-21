@@ -22,7 +22,7 @@ Usage:
 Parameters:
   --prompt TEXT      what to generate
   --image FILE|URL   first frame (image-to-video)
-  --res 480p|720p|1080p   (default 720p)      --size 1K|2K|4K (images, default 1K)
+  --res 480p|720p|1080p   (default 720p)      --size 1K|2K|4K|... (images; default 1K, or the model's smallest)
   --duration SECONDS (default 5)              --aspect 16:9|9:16|1:1|... (default 16:9)
   --audio | --no-audio (default on)           --allow-auto-duration (accept the maximum cost)
 
