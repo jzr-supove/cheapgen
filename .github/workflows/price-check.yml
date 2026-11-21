@@ -1,0 +1,50 @@
+# Weekly price check: compares data/prices.json with live provider prices and
+# opens or updates one issue labelled price-check when a price changed or a row went missing.
+# It never edits data/ itself. Kie needs no key. Add WAVESPEED_API_KEY and FAL_KEY as
+# repository secrets to check those providers too (price lookups only; they spend no credits).
+name: Price check
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check prices
+        env:
+          HOME: ${{ runner.temp }}/home
+          WAVESPEED_API_KEY: ${{ secrets.WAVESPEED_API_KEY }}
+          FAL_KEY: ${{ secrets.FAL_KEY }}
+        run: node bin/cheapgen.js prices --check --json > check.json
+
+      - name: Write the report
+        id: report
+        run: node scripts/price-check-report.js check.json report.md >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the price-check issue
+        if: steps.report.outputs.attention == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: ${{ steps.report.outputs.title }}
+        run: |
+          gh label create price-check --color FBCA04 --description "Weekly price check found changes" 2>/dev/null || true
+          number=$(gh issue list --label price-check --state open --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file report.md
+          else
+            gh issue create --title "$TITLE" --label price-check --body-file report.md
+          fi
