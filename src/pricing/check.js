@@ -3,7 +3,7 @@
 import { ADAPTERS } from '../providers/index.js';
 import { endpointPath } from '../providers/common.js';
 import { loadKiePriceList, kieUnitPrice } from '../providers/kie-price-list.js';
-import { liveToPricing } from '../providers/fal.js';
+import { liveToPricing, hasLivePrice } from '../providers/fal.js';
 import { buildCanonicalRequest, DEFAULTS } from '../request.js';
 
 export const SAME_WITHIN = 0.005;
@@ -42,6 +42,7 @@ function requestFor(catalog, e, cwd) {
 export async function checkPrices(app, entries) {
   const { io } = app;
   const base = { fetch: io.fetch, now: io.now, sleep: io.sleep, homedir: io.homedir, memo: app.liveMemo };
+  const falPrices = await loadFalPrices(app, entries, base);
   const results = [];
   for (const e of entries) {
     const bundledUsd = unitPriceOf(e.pricing);
@@ -57,7 +58,7 @@ export async function checkPrices(app, entries) {
       continue;
     }
     try {
-      results.push(await checkOne(app, e, base, out, compare));
+      results.push(await checkOne(app, e, base, out, compare, falPrices));
     } catch {
       results.push(out('unavailable', { reason: 'the live source didn\'t answer' }));
     }
@@ -65,7 +66,23 @@ export async function checkPrices(app, entries) {
   return results;
 }
 
-async function checkOne(app, e, base, out, compare) {
+const falComparable = (app, e) => e.provider === 'fal' && unitPriceOf(e.pricing) !== null && hasLivePrice(e)
+  && Boolean(app.catalog.models[e.model]?.providers.fal);
+
+const falEndpoint = (app, e) => endpointPath(requestFor(app.catalog, e, app.io.cwd), app.catalog.models[e.model].providers.fal);
+
+/** Every fal price the check needs, in one request; empty when fal doesn't answer. */
+async function loadFalPrices(app, entries, base) {
+  const wanted = entries.filter((e) => falComparable(app, e));
+  if (!app.keys.fal || wanted.length === 0) return new Map();
+  try {
+    return await ADAPTERS.fal.unitPrices(wanted.map((e) => falEndpoint(app, e)), { ...base, key: app.keys.fal });
+  } catch {
+    return new Map();
+  }
+}
+
+async function checkOne(app, e, base, out, compare, falPrices) {
   if (e.provider === 'kie') {
     const description = e.live?.kieDescription;
     if (!description) return out('unchecked', { reason: 'no Kie price-list row on record' });
@@ -92,8 +109,9 @@ async function checkOne(app, e, base, out, compare) {
   }
 
   if (e.provider === 'fal') {
-    const p = await ADAPTERS.fal.unitPrice(endpointPath(request, entry), ctx);
-    if (!p) return out('unavailable', { reason: 'fal\'s pricing API didn\'t answer' });
+    if (!hasLivePrice(e)) return out('unchecked', { reason: 'fal\'s pricing API gives only the base price' });
+    const p = falPrices.get(endpointPath(request, entry));
+    if (!p) return out('unavailable', { reason: 'no usable price from fal\'s pricing API' });
     const pricing = liveToPricing(p.unit, p.unitPrice, e.pricing);
     if (!pricing || pricing.type !== e.pricing.type) {
       return out('unchecked', { reason: `fal prices this per ${p.unit}, which doesn't match a ${e.pricing.type} price` });

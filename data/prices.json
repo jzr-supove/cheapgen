@@ -701,7 +701,10 @@
       },
       "sourceUrl": "https://fal.ai/models/bytedance/seedance-2.5/text-to-video/llms.txt",
       "verifiedOn": "2026-11-21",
-      "notes": "fal bills by tokens: width x height x seconds x 24 / 1024. fal's own per-second figures differ slightly."
+      "notes": "fal bills by tokens: width x height x seconds x 24 / 1024. fal's own per-second figures differ slightly.",
+      "live": {
+        "falUnitPrice": false
+      }
     },
     {
       "provider": "kie",
@@ -1151,7 +1154,10 @@
       },
       "sourceUrl": "https://fal.ai/models/google/nano-banana-2.1",
       "verifiedOn": "2026-11-21",
-      "notes": "fal bills this model by tokens. This is fal's representative cost for one text-to-image output (about 1680 output image tokens at $35.294 per million, plus a short prompt and medium thinking)."
+      "notes": "fal bills this model by tokens. This is fal's representative cost for one text-to-image output (about 1680 output image tokens at $35.294 per million, plus a short prompt and medium thinking).",
+      "live": {
+        "falUnitPrice": false
+      }
     },
     {
       "provider": "fal",
@@ -1166,7 +1172,10 @@
       },
       "sourceUrl": "https://fal.ai/models/google/nano-banana-2.1",
       "verifiedOn": "2026-11-21",
-      "notes": "fal bills this model by tokens. This is fal's representative cost for one text-to-image output (about 3780 output image tokens at $35.294 per million, plus a short prompt and medium thinking)."
+      "notes": "fal bills this model by tokens. This is fal's representative cost for one text-to-image output (about 3780 output image tokens at $35.294 per million, plus a short prompt and medium thinking).",
+      "live": {
+        "falUnitPrice": false
+      }
     },
     {
       "provider": "kie",
@@ -1346,7 +1355,10 @@
         "usd": 0.3
       },
       "sourceUrl": "https://fal.ai/models/fal-ai/nano-banana-pro/llms.txt",
-      "verifiedOn": "2026-11-21"
+      "verifiedOn": "2026-11-21",
+      "live": {
+        "falUnitPrice": false
+      }
     },
     {
       "provider": "kie",

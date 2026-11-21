@@ -9,6 +9,7 @@ import { pricedRequest } from '../request.js';
 
 const QUEUE = 'https://queue.fal.run';
 const API = 'https://api.fal.ai/v1';
+const MAX_ENDPOINTS = 50; // per pricing request
 const STORAGE = 'https://rest.fal.ai/storage/upload/initiate?storage_type=fal-cdn-v3';
 const auth = (ctx) => ({ Authorization: `Key ${ctx.key}` });
 
@@ -16,6 +17,12 @@ const endpointOf = endpointPath;
 
 /** fal's queue status URLs use the app id: the first two segments of the endpoint. */
 const appIdOf = (endpoint) => endpoint.split('/').slice(0, 2).join('/');
+
+/**
+ * fal's API gives one base price per endpoint. Sizes and resolutions billed at a higher rate are
+ * marked `live.falUnitPrice: false` in the price data, and use the bundled price.
+ */
+export const hasLivePrice = (priceEntry) => priceEntry?.live?.falUnitPrice !== false;
 
 /** Maps a unit price from fal's pricing API onto our bundled formula. */
 export function liveToPricing(unit, unitPrice, bundledPricing) {
@@ -44,18 +51,30 @@ export default {
     return { method: 'POST', url: `${QUEUE}/${endpointOf(r, entry)}`, body };
   },
 
-  /** fal's unit price for an endpoint: `{ unit, unitPrice }`, or null. */
-  async unitPrice(endpoint, ctx) {
-    const res = await http(ctx, { url: `${API}/models/pricing?endpoint_id=${encodeURIComponent(endpoint)}`,
-      headers: auth(ctx), timeoutMs: 10_000 });
-    if (!res.ok) return null;
-    const p = (res.json?.prices ?? []).find((x) => x.endpoint_id === endpoint) ?? res.json?.prices?.[0];
-    if (!p || typeof p.unit_price !== 'number' || (p.currency && p.currency !== 'USD')) return null;
-    return { unit: p.unit, unitPrice: p.unit_price };
+  /**
+   * fal's base unit prices: a Map of endpoint to `{ unit, unitPrice }`. Endpoints without a usable
+   * price are left out. fal allows only about two of these requests a minute, so ask for all the
+   * endpoints at once and don't retry.
+   */
+  async unitPrices(endpoints, ctx) {
+    const prices = new Map();
+    const wanted = [...new Set(endpoints)];
+    for (let i = 0; i < wanted.length; i += MAX_ENDPOINTS) {
+      const query = wanted.slice(i, i + MAX_ENDPOINTS).map((e) => `endpoint_id=${encodeURIComponent(e)}`).join('&');
+      const res = await http(ctx, { url: `${API}/models/pricing?${query}`, headers: auth(ctx), timeoutMs: 10_000, retries: 0 });
+      for (const p of (res.ok && res.json?.prices) || []) {
+        if (typeof p?.unit_price === 'number' && (!p.currency || p.currency === 'USD')) {
+          prices.set(p.endpoint_id, { unit: p.unit, unitPrice: p.unit_price });
+        }
+      }
+    }
+    return prices;
   },
 
   async livePrice(r, ctx, { entry, bundled, frameSizes }) {
-    const p = await this.unitPrice(endpointOf(r, entry), ctx);
+    if (!hasLivePrice(bundled?.entry)) return null;
+    const endpoint = endpointOf(r, entry);
+    const p = (await this.unitPrices([endpoint], ctx)).get(endpoint);
     if (!p) return null;
     const pricing = liveToPricing(p.unit, p.unitPrice, bundled?.entry?.pricing);
     if (!pricing) return null;
