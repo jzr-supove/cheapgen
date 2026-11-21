@@ -5,6 +5,7 @@ import { ADAPTERS } from '../../providers/index.js';
 import { connectedIds, noKeysError, isEnabled, balanceOf } from '../../router.js';
 import { readSpend, joinJobs } from '../../spend-log.js';
 import { ageInDays, STALE_AFTER_DAYS } from '../../pricing/index.js';
+import { checkPrices, summarize } from '../../pricing/check.js';
 import { usd, table } from '../output.js';
 import { noExtraArgs } from './shared.js';
 
@@ -74,16 +75,35 @@ export async function prices(app) {
   const now = app.io.now();
   const model = app.args[0];
   if (model && !app.catalog.models[model]) throw usageError(`unknown model "${model}"`);
-  const entries = app.catalog.prices.entries.filter((e) => !model || e.model === model)
+  const selected = app.catalog.prices.entries.filter((e) => !model || e.model === model);
+  const entries = selected
     .map((e) => ({ provider: e.provider, model: e.model, mode: e.mode, when: e.when, pricing: e.pricing,
       sourceUrl: e.sourceUrl, verifiedOn: e.verifiedOn, ageDays: ageInDays(e.verifiedOn, now) }));
   if (app.flags.check) {
+    // Exit 0 even when prices changed: the weekly job reads summary.changed.
     const stale = entries.filter((e) => e.ageDays > STALE_AFTER_DAYS);
-    const note = 'Comparing against live provider prices is not implemented yet; this checks how old the bundled prices are.';
-    const text = [`${entries.length} bundled prices, ${stale.length} older than ${STALE_AFTER_DAYS} days.`,
-      ...stale.map((e) => `  ${e.provider} ${e.model} ${JSON.stringify(e.when)}: verified ${e.verifiedOn} (${e.ageDays} days ago)`),
-      note].join('\n');
-    app.out.result({ checked: entries.length, stale, note }, text);
+    const results = await checkPrices(app, selected);
+    const summary = summarize(results);
+    const label = (r) => `${r.provider} ${r.model} ${Object.values(r.when ?? {}).flat().join('/') || '*'}`;
+    const lines = [`Checked ${results.length} bundled prices: ${summary.same} same, ${summary.changed} changed, `
+      + `${summary.missing} missing, ${summary.unavailable} unavailable, ${summary.unchecked} unchecked.`];
+    for (const r of results.filter((x) => x.status === 'changed')) {
+      lines.push(`  changed      ${label(r)}: ${r.bundledUsd} -> ${r.liveUsd} per ${r.unit}`);
+    }
+    for (const r of results.filter((x) => x.status === 'missing' || x.status === 'unavailable')) {
+      lines.push(`  ${r.status.padEnd(12)} ${label(r)}: ${r.reason}`);
+    }
+    const unchecked = new Map();
+    for (const r of results.filter((x) => x.status === 'unchecked')) {
+      const k = `${ADAPTERS[r.provider]?.displayName ?? r.provider}: ${r.reason}`;
+      unchecked.set(k, (unchecked.get(k) ?? 0) + 1);
+    }
+    for (const [k, n] of unchecked) lines.push(`  unchecked    ${k} (${n})`);
+    if (stale.length) {
+      lines.push(`${stale.length} bundled prices are older than ${STALE_AFTER_DAYS} days:`,
+        ...stale.map((e) => `  ${e.provider} ${e.model} ${JSON.stringify(e.when)}: verified ${e.verifiedOn} (${e.ageDays} days ago)`));
+    }
+    app.out.result({ checkedOn: now.toISOString(), results, summary, stale }, lines.join('\n'));
     return EXIT.OK;
   }
   const rows = entries.map((e) => [e.provider, e.model, Object.values(e.when ?? {}).flat().join('/') || '*', e.pricing.type,
