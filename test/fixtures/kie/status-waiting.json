@@ -1,4 +1,21 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 200, "msg": "success", "data": { "taskId": "task_kie_001", "state": "waiting", "resultJson": "", "failCode": "", "failMsg": "" }
+  "_recorded": "real response; the task id is changed",
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "taskId": "task_kie_001",
+    "model": "bytedance/seedance-2-mini",
+    "state": "waiting",
+    "param": "{\"input\":\"{\\\"duration\\\":4,\\\"aspect_ratio\\\":\\\"16:9\\\",\\\"generate_audio\\\":true,\\\"prompt\\\":\\\"a paper boat floating on a calm pond\\\",\\\"resolution\\\":\\\"480p\\\"}\",\"model\":\"bytedance/seedance-2-mini\"}",
+    "resultJson": "",
+    "failCode": null,
+    "failMsg": null,
+    "costTime": null,
+    "completeTime": null,
+    "createTime": 1795205191003,
+    "creditsConsumed": 0,
+    "operationType": "bytedance/seedance-2-mini",
+    "successFlag": 0,
+    "paramJson": "{\"input\":\"{\\\"duration\\\":4,\\\"aspect_ratio\\\":\\\"16:9\\\",\\\"generate_audio\\\":true,\\\"prompt\\\":\\\"a paper boat floating on a calm pond\\\",\\\"resolution\\\":\\\"480p\\\"}\",\"model\":\"bytedance/seedance-2-mini\"}"
+  }
 }

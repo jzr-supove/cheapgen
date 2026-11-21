@@ -1,4 +1,20 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 200, "message": "success", "data": { "id": "ws_task_001", "status": "processing", "outputs": [] }
+  "_recorded": "real response; the job id is changed",
+  "code": 200,
+  "message": "success",
+  "data": {
+    "id": "ws_task_001",
+    "model": "bytedance/seedance-2.0-mini/text-to-video",
+    "outputs": [],
+    "urls": {
+      "get": "https://api.wavespeed.ai/api/v3/predictions/ws_task_001/result"
+    },
+    "status": "processing",
+    "created_at": "2026-11-20T20:35:34.326522297Z",
+    "code": 0,
+    "error": "",
+    "timings": {
+      "inference": 0
+    }
+  }
 }

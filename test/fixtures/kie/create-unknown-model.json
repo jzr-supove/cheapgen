@@ -1,0 +1,6 @@
+{
+  "_recorded": "real response; Kie answers HTTP 200 with this body",
+  "code": 422,
+  "msg": "The model name you specified is not supported. Please verify your input and use one of the supported models provided by KIE.",
+  "data": null
+}

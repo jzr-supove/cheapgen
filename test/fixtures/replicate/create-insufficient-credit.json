@@ -1,4 +1,6 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "title": "Insufficient credit", "detail": "You have insufficient credit to run this model.", "status": 402
+  "_recorded": "real response; HTTP 402",
+  "title": "Insufficient credit",
+  "detail": "You have insufficient credit to run this model. Go to https://replicate.com/account/billing#billing to purchase credit. Once you purchase credit, please wait a few minutes before trying again.",
+  "status": 402
 }

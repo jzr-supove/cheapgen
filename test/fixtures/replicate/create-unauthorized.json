@@ -1,4 +1,6 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "title": "Unauthenticated", "detail": "You did not pass a valid authentication token", "status": 401
+  "_recorded": "real response to a request with an invalid key, recorded 2026-11-21",
+  "title": "Unauthenticated",
+  "detail": "You did not pass a valid authentication token",
+  "status": 401
 }

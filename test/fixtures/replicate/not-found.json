@@ -1,0 +1,5 @@
+{
+  "_recorded": "real response; HTTP 404, for an unknown job and for an unknown model",
+  "detail": "The requested resource could not be found.",
+  "status": 404
+}

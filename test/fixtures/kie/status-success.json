@@ -1,4 +1,26 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 200, "msg": "success", "data": { "taskId": "task_kie_001", "state": "success", "resultJson": "{\"resultUrls\":[\"https://cdn.cheapgen-test.example/out/kie-1.mp4\"]}", "failCode": "", "failMsg": "" }
+  "_recorded": "real response; the task id and result URL are changed",
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "taskId": "task_kie_001",
+    "model": "bytedance/seedance-2-mini",
+    "state": "success",
+    "param": "{\"input\":\"{\\\"duration\\\":4,\\\"aspect_ratio\\\":\\\"16:9\\\",\\\"generate_audio\\\":true,\\\"prompt\\\":\\\"a paper boat floating on a calm pond\\\",\\\"resolution\\\":\\\"480p\\\"}\",\"model\":\"bytedance/seedance-2-mini\"}",
+    "resultJson": "{\"resultUrls\":[\"https://cdn.cheapgen-test.example/out/kie-1.mp4\"]}",
+    "failCode": null,
+    "failMsg": null,
+    "costTime": 84,
+    "completeTime": 1795205275257,
+    "createTime": 1795205191003,
+    "creditsConsumed": 15.2,
+    "operationType": "bytedance/seedance-2-mini",
+    "successFlag": 1,
+    "paramJson": "{\"input\":\"{\\\"duration\\\":4,\\\"aspect_ratio\\\":\\\"16:9\\\",\\\"generate_audio\\\":true,\\\"prompt\\\":\\\"a paper boat floating on a calm pond\\\",\\\"resolution\\\":\\\"480p\\\"}\",\"model\":\"bytedance/seedance-2-mini\"}",
+    "response": {
+      "resultUrls": [
+        "https://cdn.cheapgen-test.example/out/kie-1.mp4"
+      ]
+    }
+  }
 }

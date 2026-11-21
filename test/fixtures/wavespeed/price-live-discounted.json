@@ -1,2 +1,12 @@
-{ "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 200, "message": "success", "data": { "price": 0.30, "discounted_price": 0.27 } }
+{
+  "_recorded": "real response; the prices are changed",
+  "code": 200,
+  "message": "success",
+  "data": {
+    "model_id": "bytedance/seedance-2.0-mini/text-to-video",
+    "price": 0.3,
+    "discounted_price": 0.27,
+    "discount_rate": 90,
+    "currency": "USD"
+  }
+}

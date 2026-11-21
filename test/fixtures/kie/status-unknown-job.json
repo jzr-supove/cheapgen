@@ -1,0 +1,6 @@
+{
+  "_recorded": "real response; Kie answers HTTP 200 with this body",
+  "code": 422,
+  "msg": "recordInfo is null",
+  "data": null
+}

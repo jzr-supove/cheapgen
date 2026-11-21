@@ -1,0 +1,37 @@
+{
+  "_recorded": "real response; cut to five endpoints",
+  "prices": [
+    {
+      "endpoint_id": "bytedance/seedance-2.0/mini/text-to-video",
+      "unit_price": 0.007,
+      "unit": "1000 tokens",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "bytedance/seedream/v5.5/text-to-image",
+      "unit_price": 0.03,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/nano-banana-pro",
+      "unit_price": 0.15,
+      "unit": "images",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/flux-2-pro",
+      "unit_price": 0.03,
+      "unit": "processed megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "bytedance/seedance-2.5/text-to-video",
+      "unit_price": 0.0214,
+      "unit": "1000 tokens",
+      "currency": "USD"
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false
+}

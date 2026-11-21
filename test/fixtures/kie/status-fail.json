@@ -1,4 +1,23 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 200, "msg": "success", "data": { "taskId": "task_kie_001", "state": "fail", "resultJson": "", "failCode": "422", "failMsg": "The prompt was rejected by content policy" }
+  "_recorded": "real response; the task id and account number are changed. The first frame was too small; no credits were charged",
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "taskId": "task_kie_001",
+    "model": "bytedance/seedance-2-mini",
+    "state": "fail",
+    "param": "{\"input\":\"{\\\"duration\\\":4,\\\"aspect_ratio\\\":\\\"16:9\\\",\\\"first_frame_url\\\":\\\"https://tempfile.redpandaai.co/kieai/1000/images/frame.png\\\",\\\"generate_audio\\\":true,\\\"prompt\\\":\\\"soft clouds slowly drifting across the sky\\\",\\\"resolution\\\":\\\"480p\\\"}\",\"model\":\"bytedance/seedance-2-mini\"}",
+    "resultJson": "",
+    "failCode": "400",
+    "failMsg": "Error while downloading image, error: expected the height to be at least 300px, but received a 512x288px image instead",
+    "costTime": 3,
+    "completeTime": 1795205303497,
+    "createTime": 1795205300335,
+    "creditsConsumed": 0,
+    "operationType": "bytedance/seedance-2-mini",
+    "successFlag": 3,
+    "paramJson": "{\"input\":\"{\\\"duration\\\":4,\\\"aspect_ratio\\\":\\\"16:9\\\",\\\"first_frame_url\\\":\\\"https://tempfile.redpandaai.co/kieai/1000/images/frame.png\\\",\\\"generate_audio\\\":true,\\\"prompt\\\":\\\"soft clouds slowly drifting across the sky\\\",\\\"resolution\\\":\\\"480p\\\"}\",\"model\":\"bytedance/seedance-2-mini\"}",
+    "errorCode": 400,
+    "errorMessage": "Error while downloading image, error: expected the height to be at least 300px, but received a 512x288px image instead"
+  }
 }

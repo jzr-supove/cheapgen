@@ -94,7 +94,7 @@ export function wavespeed({ balance = 'ok', submit = 'success', states = ['compl
     insufficient: () => ({ status: 400, json: fixture('wavespeed', 'submit-insufficient-credits') }),
     'insufficient-envelope': () => ({ status: 200, json: fixture('wavespeed', 'submit-insufficient-credits') }),
     'rate-limited': () => ({ status: 429, json: { code: 429, message: 'Too many requests' } }),
-    unauthorized: () => ({ status: 401, json: { code: 401, message: 'Invalid API key' } }),
+    unauthorized: () => ({ status: 401, json: fixture('wavespeed', 'submit-unauthorized') }),
     'server-error': () => ({ status: 500, json: { code: 500, message: 'Internal Server Error' } }),
   };
   const routes = [

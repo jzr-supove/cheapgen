@@ -1,0 +1,5 @@
+{
+  "_recorded": "real response; HTTP 400",
+  "code": 400,
+  "message": "Model not found."
+}

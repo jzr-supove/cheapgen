@@ -1,0 +1,15 @@
+{
+  "_recorded": "real response; the account number is changed",
+  "success": true,
+  "code": 200,
+  "msg": "File uploaded successfully",
+  "data": {
+    "success": true,
+    "fileName": "frame.png",
+    "filePath": "kieai/1000/images/frame.png",
+    "downloadUrl": "https://tempfile.redpandaai.co/kieai/1000/images/frame.png",
+    "fileSize": 1222,
+    "mimeType": "image/png",
+    "uploadedAt": "2026-11-20T20:08:20.134Z"
+  }
+}

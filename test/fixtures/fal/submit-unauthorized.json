@@ -1,4 +1,4 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "detail": "Invalid authentication credentials"
+  "_recorded": "real response to a request with an invalid key, recorded 2026-11-21",
+  "detail": "invalid key credentials"
 }

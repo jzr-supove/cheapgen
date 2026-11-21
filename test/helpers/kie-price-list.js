@@ -1,5 +1,5 @@
 // Fake of Kie's public price list: POST /client/v1/model-pricing/page, paged.
-// The page envelope comes from test/fixtures/kie/price-list-page.json (synthetic); rows are
+// The page envelope comes from test/fixtures/kie/price-list-page.json (recorded); rows are
 // in `data.records`, with prices as strings.
 import { fixture, routesFor } from './providers.js';
 

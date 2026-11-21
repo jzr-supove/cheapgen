@@ -1,4 +1,8 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 200, "message": "success", "data": { "balance": 100 }
+  "_recorded": "real response; the balance is changed",
+  "code": 200,
+  "message": "success",
+  "data": {
+    "balance": 100
+  }
 }

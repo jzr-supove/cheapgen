@@ -1,0 +1,4 @@
+{
+  "_recorded": "real response; HTTP 403 when the balance is used up",
+  "detail": "User is locked. Reason: Exhausted balance. Top up your balance at fal.ai/dashboard/billing"
+}

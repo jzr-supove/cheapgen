@@ -1,4 +1,8 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "credits": { "current_balance": 100, "currency": "USD" }
+  "_recorded": "real response; the account name and balance are changed",
+  "username": "example",
+  "credits": {
+    "current_balance": 100,
+    "currency": "USD"
+  }
 }

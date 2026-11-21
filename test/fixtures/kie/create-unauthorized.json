@@ -1,4 +1,5 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 401, "msg": "You do not have access permissions", "data": null
+  "_recorded": "real response to a request with an invalid key, recorded 2026-11-21 (Kie answers HTTP 200 with this body)",
+  "code": 401,
+  "msg": "Unauthorized – Authentication failed. Please check that your Authorization and Content-Type headers are correctly set."
 }

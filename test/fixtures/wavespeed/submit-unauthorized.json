@@ -1,0 +1,5 @@
+{
+  "_recorded": "real response to a request with an invalid key, recorded 2026-11-21; the support address is replaced",
+  "code": 401,
+  "message": "Invalid API key. Verify the key on your dashboard's API Keys page, or contact [email]"
+}

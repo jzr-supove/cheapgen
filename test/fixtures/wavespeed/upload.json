@@ -1,0 +1,11 @@
+{
+  "_recorded": "real response; the file name and host are changed",
+  "code": 200,
+  "message": "success",
+  "data": {
+    "type": "image",
+    "download_url": "https://cdn.cheapgen-test.example/media/images/ws-upload-1.png",
+    "filename": "ws-upload-1.png",
+    "size": 456915
+  }
+}

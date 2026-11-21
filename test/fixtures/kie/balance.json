@@ -1,4 +1,4 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
+  "_recorded": "real response; the number of credits is changed",
   "code": 200, "msg": "success", "data": 20000
 }

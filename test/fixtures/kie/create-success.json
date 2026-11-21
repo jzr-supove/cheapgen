@@ -1,4 +1,9 @@
 {
-  "_synthetic": "built from the provider docs; replace with a recorded response",
-  "code": 200, "msg": "success", "data": { "taskId": "task_kie_001" }
+  "_recorded": "real response; the task id is changed",
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "taskId": "task_kie_001",
+    "recordId": "task_kie_001"
+  }
 }

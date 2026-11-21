@@ -136,7 +136,7 @@ describe('a job that fails after acceptance', () => {
     assert.equal(count(e.calls, 'replicate'), 1);
   });
 
-  test('with retryFailedJobs a failure that is the request\'s fault (content policy) is still not retried', async (t) => {
+  test('with retryFailedJobs a failure that is the request\'s fault (first frame too small) is still not retried', async (t) => {
     const e = createEnvironment(t, { env: keysFor('kie', 'replicate'),
       routes: routesFor({ kie: { states: ['fail'] }, replicate: {} }),
       userConfig: { retryFailedJobs: true } });

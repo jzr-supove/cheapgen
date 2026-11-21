@@ -1,2 +1,13 @@
-{ "_synthetic": "built from the provider docs; replace with a recorded response",
-  "id": "file_001", "urls": { "get": "https://api.replicate.com/v1/files/file_001/download" } }
+{
+  "_recorded": "real response; the file id is changed and the checksums removed",
+  "id": "file_001.png",
+  "name": "boat-frame.png",
+  "content_type": "image/png",
+  "size": 456915,
+  "metadata": {},
+  "created_at": "2026-11-20T20:27:08.190Z",
+  "expires_at": "2026-11-21T20:27:08.190Z",
+  "urls": {
+    "get": "https://api.replicate.com/v1/files/file_001.png"
+  }
+}
