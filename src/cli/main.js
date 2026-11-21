@@ -78,6 +78,7 @@ export async function main(argv, io = {}) {
       get catalog() { return (this._catalog ??= loadCatalog(io.dataDir)); },
       priceCache: createPriceCache(io.homedir),
       priceMemo: new Map(),
+      liveMemo: new Map(),
       balanceMemo: new Map(),
       redact: scrub,
     };

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    { "provider": "kie", "model": "seedance-2.0-mini", "mode": "*", "when": { "resolution": "480p" },
+      "pricing": { "type": "perSecond", "usd": 0.019 },
+      "sourceUrl": "https://kie.ai/seedance-2-0-mini", "verifiedOn": "2026-11-20",
+      "live": { "kieDescription": "bytedance/seedance-2-mini, 480P no video" } },
+    { "provider": "kie", "model": "seedance-2.0-mini", "mode": "*", "when": { "resolution": "720p" },
+      "pricing": { "type": "perSecond", "usd": 0.041 },
+      "sourceUrl": "https://kie.ai/seedance-2-0-mini", "verifiedOn": "2026-11-20",
+      "live": { "kieDescription": "bytedance/seedance-2-mini, 720P no video" } },
+    { "provider": "kie", "model": "seedream-5-pro", "mode": "*", "when": { "size": "1K" },
+      "pricing": { "type": "perImage", "usd": 0.035 },
+      "sourceUrl": "https://kie.ai/seedream-5-0-pro", "verifiedOn": "2026-11-20",
+      "live": { "kieDescription": "seedream 5 Pro, text-to-image, 1K" } },
+    { "provider": "replicate", "model": "seedance-2.0-mini", "mode": "*", "when": { "resolution": "480p" },
+      "pricing": { "type": "perSecond", "usd": 0.04 },
+      "sourceUrl": "https://replicate.com/bytedance/seedance-2.0-mini", "verifiedOn": "2026-11-20" },
+    { "provider": "replicate", "model": "seedance-2.0-mini", "mode": "*", "when": { "resolution": "720p" },
+      "pricing": { "type": "perSecond", "usd": 0.09 },
+      "sourceUrl": "https://replicate.com/bytedance/seedance-2.0-mini", "verifiedOn": "2026-10-01" },
+    { "provider": "wavespeed", "model": "seedance-2.0-mini", "mode": "*", "when": { "resolution": "480p" },
+      "pricing": { "type": "perSecond", "usd": 0.054 },
+      "sourceUrl": "https://wavespeed.ai/models/bytedance/seedance-2.0-mini", "verifiedOn": "2026-11-20" },
+    { "provider": "fal", "model": "seedance-2.0-mini", "mode": "*", "when": { "resolution": "480p" },
+      "pricing": { "type": "perToken", "usdPer1kTokens": 0.007, "fps": 24 },
+      "sourceUrl": "https://fal.ai/models/bytedance/seedance-2.0/mini/text-to-video", "verifiedOn": "2026-11-20" }
+  ]
+}

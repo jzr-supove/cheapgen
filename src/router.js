@@ -32,7 +32,8 @@ export function checkProviderId(id, flag) {
 
 /** Adapter context: everything an adapter may touch. Keys are passed in, never read from env. */
 export function ctxFor(app, id) {
-  return { key: app.keys[id], fetch: app.io.fetch, now: app.io.now, sleep: app.io.sleep };
+  return { key: app.keys[id], fetch: app.io.fetch, now: app.io.now, sleep: app.io.sleep, homedir: app.io.homedir,
+    memo: app.liveMemo };
 }
 
 /** Price of `request` on provider `id`, memoized for this command. Live only when connected and enabled. */

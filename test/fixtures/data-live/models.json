@@ -1,0 +1,28 @@
+{
+  "seedance-2.0-mini": {
+    "kind": "video",
+    "frameSeries": "seedance-2.0",
+    "modes": ["text-to-video", "image-to-video"],
+    "resolutions": ["480p", "720p"],
+    "durations": { "min": 4, "max": 15 },
+    "aspectRatios": ["16:9", "9:16", "1:1"],
+    "providers": {
+      "kie": { "id": "bytedance/seedance-2-mini" },
+      "replicate": { "id": "bytedance/seedance-2.0-mini" },
+      "wavespeed": { "id": "bytedance/seedance-2.0-mini",
+        "modes": { "text-to-video": "text-to-video", "image-to-video": "image-to-video" } },
+      "fal": { "id": "bytedance/seedance-2.0/mini",
+        "modes": { "text-to-video": "text-to-video", "image-to-video": "image-to-video" } }
+    }
+  },
+  "seedream-5-pro": {
+    "kind": "image",
+    "modes": ["text-to-image"],
+    "sizes": ["1K", "2K"],
+    "aspectRatios": ["1:1", "16:9"],
+    "providers": {
+      "kie": { "id": "seedream/5-pro-text-to-image",
+        "request": { "size": { "field": "quality", "values": { "1K": "basic", "2K": "high" } } } }
+    }
+  }
+}

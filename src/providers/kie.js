@@ -3,12 +3,14 @@
 // Endpoint paths and field names follow Kie's docs.
 import { http, describeBody } from '../http.js';
 import { SubmitRejected, SubmitUnknown } from './errors.js';
-import { postJob, getJson, readError, fileBlob, asRejection, videoFields } from './common.js';
+import { postJob, getJson, readError, fileBlob, asRejection, videoFields, imageFields } from './common.js';
+import { loadKiePriceList, kieUnitPrice, USD_PER_CREDIT } from './kie-price-list.js';
+import { cost } from '../pricing/formulas.js';
+import { pricedRequest } from '../request.js';
 
 const BASE = 'https://api.kie.ai';
 const UPLOAD_URL = 'https://kieai.redpandaai.co/api/file-stream-upload';
-/** Kie sells credits at $0.005 each. */
-export const USD_PER_CREDIT = 0.005;
+export { USD_PER_CREDIT };
 
 const auth = (ctx) => ({ Authorization: `Bearer ${ctx.key}` });
 
@@ -28,9 +30,20 @@ export default {
 
   buildRequest(r, { entry, imageUrl }) {
     const input = r.kind === 'image'
-      ? { prompt: r.prompt, aspect_ratio: r.aspectRatio, resolution: r.size }
-      : { prompt: r.prompt, ...videoFields(r), ...(imageUrl ? { first_frame_url: imageUrl } : {}) };
+      ? { prompt: r.prompt, ...imageFields(r, entry, 'resolution') }
+      : { prompt: r.prompt, ...videoFields(r, { entry }), ...(imageUrl ? { first_frame_url: imageUrl } : {}) };
     return { method: 'POST', url: `${BASE}/api/v1/jobs/createTask`, body: { model: entry.id, input } };
+  },
+
+  /** Price from Kie's public list, matched on the entry's `live.kieDescription`. */
+  async livePrice(r, ctx, { bundled, frameSizes }) {
+    const entry = bundled?.entry;
+    const description = entry?.live?.kieDescription;
+    if (!description) return null;
+    const rows = await loadKiePriceList(ctx);
+    const unitUsd = rows ? kieUnitPrice(rows, description, entry.pricing.type) : null;
+    if (unitUsd === null) return null;
+    return { usd: cost({ ...entry.pricing, usd: unitUsd }, pricedRequest(r), frameSizes), unit: entry.pricing.type };
   },
 
   async balance(ctx) {
