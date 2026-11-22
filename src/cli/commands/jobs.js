@@ -25,6 +25,12 @@ function requireProvider(app, id) {
   }
 }
 
+/** "15 minutes", or "90 seconds" when it isn't a whole number of minutes. */
+function describeWait(ms) {
+  const [n, unit] = ms % 60_000 === 0 ? [ms / 60_000, 'minute'] : [ms / 1000, 'second'];
+  return `${n} ${unit}${n === 1 ? '' : 's'}`;
+}
+
 /**
  * Waits for a job, downloads its outputs, and writes the `finished` spend-log line.
  * Throws exit code 7 on timeout; the `submitted` line stays as the record of the spend.
@@ -32,8 +38,7 @@ function requireProvider(app, id) {
 export async function finishJob(app, { job, provider, nativeId, meta, kind, model, downloadDir, timeoutMs }) {
   const s = await waitForJob(app, { provider, nativeId, meta, timeoutMs });
   if (s.state === 'timeout') {
-    const minutes = Math.round(timeoutMs / 60_000);
-    throw new CliError(EXIT.TIMED_OUT, 'timeout', `job ${job} hasn't finished after ${minutes} minute${minutes === 1 ? '' : 's'}. `
+    throw new CliError(EXIT.TIMED_OUT, 'timeout', `job ${job} hasn't finished after ${describeWait(timeoutMs)}. `
       + `It may still finish: run \`cheapgen wait ${job}\` to keep waiting.`, { provider, job });
   }
   let files = [];
