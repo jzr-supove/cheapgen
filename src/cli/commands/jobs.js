@@ -6,6 +6,7 @@ import { ADAPTERS } from '../../providers/index.js';
 import { ctxFor, connectedIds, noKeysError, notConnectedError, isEnabled } from '../../router.js';
 import { parseJobId, waitForJob, downloadOutputs, TIMEOUT_MS } from '../../jobs.js';
 import { appendSpend, findJob } from '../../spend-log.js';
+import { usd } from '../output.js';
 import { noExtraArgs, timeoutFlag } from './shared.js';
 
 export function downloadDirFrom(app) {
@@ -43,15 +44,27 @@ export async function finishJob(app, { job, provider, nativeId, meta, kind, mode
       app.out.warn(`${err.message}. The result links are still valid for a while.`);
     }
   }
-  appendSpend(app, { event: 'finished', job, state: s.state, files, outputs: s.outputs, ...(s.error ? { error: s.error } : {}) });
-  return { state: s.state, outputs: s.outputs, files, ...(s.error ? { error: s.error } : {}) };
+  const rest = { ...(s.error ? { error: s.error } : {}), ...(s.actualUsd === undefined ? {} : { actualUsd: s.actualUsd }) };
+  appendSpend(app, { event: 'finished', job, state: s.state, files, outputs: s.outputs, ...rest });
+  return { state: s.state, outputs: s.outputs, files, ...rest };
+}
+
+/** "Charged: $0.0760", or "Not charged." for a job that cost nothing; '' when the charge isn't known. */
+export function describeCharge({ actualUsd }) {
+  if (actualUsd === undefined) return '';
+  return actualUsd > 0 ? `Charged: ${usd(actualUsd)}` : 'Not charged.';
 }
 
 export function describeFinished(job, done) {
-  if (done.state !== 'succeeded') return `${job}: ${done.state}${done.error?.message ? ` (${done.error.message})` : ''}`;
+  if (done.state !== 'succeeded') {
+    const charge = describeCharge(done).replace('Charged:', 'Charged');
+    return `${job}: ${done.state}${done.error?.message ? ` (${done.error.message})` : ''}${charge ? `. ${charge}` : ''}`;
+  }
   const lines = [`${job}: succeeded`];
   for (const f of done.files) lines.push(`  saved ${f}`);
   if (!done.files.length) for (const u of done.outputs) lines.push(`  ${u}`);
+  const charge = describeCharge(done);
+  if (charge) lines.push(charge);
   return lines.join('\n');
 }
 
@@ -67,7 +80,8 @@ export async function status(app) {
   } catch (err) {
     throw new CliError(EXIT.BUG, 'status', `couldn't read the status of ${job}: ${err.message}`, { provider, job });
   }
-  const text = [`${job}: ${s.state}`, ...s.outputs.map((u) => `  ${u}`), ...(s.error ? [`  ${s.error.message}`] : [])].join('\n');
+  const text = [`${job}: ${s.state}`, ...s.outputs.map((u) => `  ${u}`), ...(s.error ? [`  ${s.error.message}`] : []),
+    ...(s.actualUsd === undefined ? [] : [describeCharge(s)])].join('\n');
   app.out.result({ job, provider, ...s }, text);
   return EXIT.OK;
 }

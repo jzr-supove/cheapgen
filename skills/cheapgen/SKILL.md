@@ -54,7 +54,7 @@ Video: `seedance-2.0-mini` (cheapest), `seedance-2.0-fast`, `seedance-2.0`,
    `needsConfirmation` matters.
 3. After the user agrees: `cheapgen run <model> --prompt '...' [params] --wait --json`.
    Results are saved to `./cheapgen-out` (or `--download DIR`). Report the `files` paths, the
-   `job` id and the estimate.
+   `job` id, and what it cost: `actualUsd` (the charge) if present, otherwise the estimate.
 4. Long video jobs: run without `--wait`, tell the user the job id, and later run
    `cheapgen wait <job> --json`.
 
@@ -76,8 +76,8 @@ With `--json`, errors are `{ "error": { code, message, provider, job } }` on std
 ## Other commands
 
 - `cheapgen providers`: which providers are connected, enabled, and their balances.
-- `cheapgen spend [--since YYYY-MM-DD]`: what past runs cost (estimates; the provider's bill
-  is authoritative).
+- `cheapgen spend [--since YYYY-MM-DD]`: what past runs cost (`charged` where the provider
+  reports it, otherwise `estimate`; the provider's bill is authoritative).
 - `cheapgen status <job>`: one status check without waiting.
 
 Prices are estimates. Say so when it matters, and never promise an exact charge.

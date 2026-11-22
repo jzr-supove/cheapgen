@@ -16,6 +16,16 @@ const auth = (ctx) => ({ Authorization: `Bearer ${ctx.key}` });
 
 const STATES = { waiting: 'queued', queuing: 'queued', generating: 'running', success: 'succeeded', fail: 'failed' };
 
+/**
+ * What a finished job cost, or null. The field also reads 0 before the charge is known, so 0
+ * counts only for a failed job.
+ */
+function chargeOf(state, credits) {
+  const known = typeof credits === 'number' && Number.isFinite(credits)
+    && ((state === 'succeeded' && credits > 0) || (state === 'failed' && credits >= 0));
+  return known ? credits * USD_PER_CREDIT : null;
+}
+
 /** The address of an uploaded file: Kie answers { code, msg, data: { downloadUrl, ... } }. */
 function uploadedUrl(body) {
   const url = body?.data?.downloadUrl;
@@ -87,6 +97,7 @@ export default {
     const error = state === 'failed'
       ? { code: d.failCode || null, message: d.failMsg || 'the job failed', providerFault: /^5/.test(String(d.failCode ?? '')) }
       : undefined;
-    return { state, outputs, ...(error ? { error } : {}) };
+    const actualUsd = chargeOf(state, d.creditsConsumed);
+    return { state, outputs, ...(error ? { error } : {}), ...(actualUsd === null ? {} : { actualUsd }) };
   },
 };

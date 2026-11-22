@@ -24,17 +24,23 @@ export function readSpend(homedir) {
   return lines;
 }
 
-/** Joins submitted and finished lines by job id, oldest first. */
+const isAmount = (x) => typeof x === 'number' && Number.isFinite(x) && x >= 0;
+
+/**
+ * Joins submitted and finished lines by job id, oldest first. `actualUsd` is what the provider
+ * reported charging, or null.
+ */
 export function joinJobs(lines) {
   const jobs = new Map();
   for (const l of lines) {
     if (!l?.job) continue;
-    const j = jobs.get(l.job) ?? { job: l.job };
+    const j = jobs.get(l.job) ?? { job: l.job, actualUsd: null };
     if (l.event === 'submitted') {
       Object.assign(j, { provider: l.provider ?? l.job.split(':')[0], model: l.model, params: l.params,
         estimateUsd: l.estimateUsd ?? null, priceSource: l.priceSource ?? null, submittedAt: l.at, meta: l.meta });
     } else if (l.event === 'finished') {
       Object.assign(j, { state: l.state, finishedAt: l.at, files: l.files ?? [] });
+      if (isAmount(l.actualUsd)) j.actualUsd = l.actualUsd;
     }
     jobs.set(l.job, j);
   }

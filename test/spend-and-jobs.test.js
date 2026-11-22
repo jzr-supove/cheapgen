@@ -104,7 +104,9 @@ describe('spend log', () => {
     assert.equal(s.json.jobs.length, 1, 'one job, not two lines');
     assert.equal(s.json.jobs[0].job, 'kie:task_kie_001');
     assert.equal(s.json.jobs[0].state, 'succeeded');
-    approx(s.json.totalUsd, 0.095);
+    // The recorded success response reports 15.2 credits ($0.076), which replaces the 5-second estimate.
+    approx(s.json.totalUsd, 0.076);
+    approx(s.json.jobs[0].estimateUsd, 0.095);
   });
 
   test('prompts are never written to the spend log', async (t) => {

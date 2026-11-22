@@ -58,15 +58,22 @@ export async function spend(app) {
     const at = Date.parse(j.submittedAt ?? j.finishedAt ?? '');
     return !Number.isNaN(at) && at >= since;
   });
-  const known = jobs.filter((j) => typeof j.estimateUsd === 'number');
-  const totalUsd = known.reduce((sum, j) => sum + j.estimateUsd, 0);
-  const note = 'These are cheapgen\'s estimates. Your provider\'s bill is authoritative.';
+  const sum = (list, field) => list.reduce((total, j) => total + j[field], 0);
+  const charged = jobs.filter((j) => j.actualUsd !== null);
+  const estimated = jobs.filter((j) => j.actualUsd === null && typeof j.estimateUsd === 'number');
+  const chargedUsd = sum(charged, 'actualUsd');
+  const estimatedUsd = sum(estimated, 'estimateUsd');
+  const totalUsd = chargedUsd + estimatedUsd;
+  const unknownEstimates = jobs.length - charged.length - estimated.length;
+  const note = '"charged" is what the provider reported; "estimate" is cheapgen\'s. Your provider\'s bill is authoritative.';
+  const amount = (j) => (j.actualUsd !== null ? `${usd(j.actualUsd)} charged`
+    : typeof j.estimateUsd === 'number' ? `${usd(j.estimateUsd)} estimate` : usd(null));
   const out = jobs.map(({ meta, ...j }) => j);
-  const rows = out.map((j) => [j.submittedAt?.slice(0, 16).replace('T', ' ') ?? '', j.job, j.model ?? '', j.state, usd(j.estimateUsd)]);
+  const rows = out.map((j) => [j.submittedAt?.slice(0, 16).replace('T', ' ') ?? '', j.job, j.model ?? '', j.state, amount(j)]);
   const text = [jobs.length ? table(rows) : 'No jobs in the spend log.',
-    `Total: $${totalUsd.toFixed(2)}${known.length < jobs.length ? ` (+ ${jobs.length - known.length} with unknown price)` : ''}`,
+    `Total: $${totalUsd.toFixed(2)}${unknownEstimates ? ` (+ ${unknownEstimates} with unknown price)` : ''}`,
     note].join('\n');
-  app.out.result({ since: app.flags.since ?? null, totalUsd, unknownEstimates: jobs.length - known.length, jobs: out, note }, text);
+  app.out.result({ since: app.flags.since ?? null, totalUsd, chargedUsd, estimatedUsd, unknownEstimates, jobs: out, note }, text);
   return EXIT.OK;
 }
 

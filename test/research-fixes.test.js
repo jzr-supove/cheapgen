@@ -161,10 +161,10 @@ describe('Kie, from recorded responses', () => {
     assert.equal(url, 'https://tempfile.redpandaai.co/kieai/1000/images/frame.png');
   });
 
-  test('a finished job lists its result URL', async () => {
+  test('a finished job lists its result URL and what it cost', async () => {
     const fake = createFakeFetch([{ method: 'GET', url: RECORD, status: 200, json: fixture('kie', 'status-success') }]);
     const s = await ADAPTERS.kie.status('task_kie_001', ctxWith(fake.fetch));
-    assert.deepEqual(s, { state: 'succeeded', outputs: ['https://cdn.cheapgen-test.example/out/kie-1.mp4'] });
+    assert.deepEqual(s, { state: 'succeeded', outputs: ['https://cdn.cheapgen-test.example/out/kie-1.mp4'], actualUsd: 0.076 });
   });
 
   test('a job that failed on a bad first frame reports the reason and is not a provider fault', async () => {
