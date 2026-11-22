@@ -326,3 +326,132 @@ describe('other providers report no charge', () => {
     });
   }
 });
+
+describe('spend: failed Replicate jobs count as not charged', () => {
+  const sub = (job, estimateUsd, at = '2026-11-21T10:00:00Z') =>
+    ({ at, event: 'submitted', job, model: 'seedance-2.0-mini', params: {}, estimateUsd, priceSource: 'bundled' });
+  const fin = (job, state, extra = {}, at = '2026-11-21T10:05:00Z') => ({ at, event: 'finished', job, state, files: [], ...extra });
+  const byJob = (json, id) => json.jobs.find((j) => j.job === id);
+  const spendJson = async (t, lines) => {
+    const e = createEnvironment(t);
+    e.writeSpendLines(lines);
+    return (await e.run(['spend', '--json'])).json;
+  };
+
+  test('a failed Replicate job with no reported charge is $0 and keeps its estimate field', async (t) => {
+    const s = await spendJson(t, [sub('replicate:rp_one', 0.2), fin('replicate:rp_one', 'failed')]);
+    const j = byJob(s, 'replicate:rp_one');
+    assert.equal(j.actualUsd, 0);
+    approx(j.estimateUsd, 0.2);
+    approx(s.totalUsd, 0);
+    approx(s.chargedUsd, 0);
+    approx(s.estimatedUsd, 0);
+    assert.equal(s.unknownEstimates, 0);
+  });
+
+  test('it adds nothing next to other jobs, and the text row and total agree', async (t) => {
+    const e = createEnvironment(t);
+    e.writeSpendLines([
+      sub('replicate:rp_one', 0.2), fin('replicate:rp_one', 'failed'),
+      sub('replicate:rp_two', 0.3), fin('replicate:rp_two', 'succeeded'),
+    ]);
+    const s = (await e.run(['spend', '--json'])).json;
+    approx(s.totalUsd, 0.3);
+    approx(s.chargedUsd, 0);
+    approx(s.estimatedUsd, 0.3);
+    const r = await e.run(['spend']);
+    const row = (id) => r.stdout.split('\n').find((l) => l.includes(id)) ?? '';
+    assert.match(row('replicate:rp_one'), /charged/);
+    assert.doesNotMatch(row('replicate:rp_one'), /estimate/);
+    assert.match(row('replicate:rp_two'), /estimate/);
+    assert.match(r.stdout, /Total:.*\$0\.30/);
+  });
+
+  test('a failed Replicate job whose estimate is null is $0, not an unknown price', async (t) => {
+    const e = createEnvironment(t);
+    e.writeSpendLines([sub('replicate:rp_one', null), fin('replicate:rp_one', 'failed')]);
+    const s = (await e.run(['spend', '--json'])).json;
+    assert.equal(byJob(s, 'replicate:rp_one').actualUsd, 0);
+    assert.equal(byJob(s, 'replicate:rp_one').estimateUsd, null);
+    assert.equal(s.unknownEstimates, 0);
+    approx(s.totalUsd, 0);
+    const r = await e.run(['spend']);
+    const row = r.stdout.split('\n').find((l) => l.includes('replicate:rp_one')) ?? '';
+    assert.match(row, /charged/);
+    assert.doesNotMatch(row, /price unknown/);
+    assert.doesNotMatch(r.stdout, /unknown price/);
+  });
+
+  test('succeeded, cancelled and unfinished Replicate jobs keep their estimate', async (t) => {
+    const s = await spendJson(t, [
+      sub('replicate:rp_ok', 0.3), fin('replicate:rp_ok', 'succeeded'),
+      sub('replicate:rp_stop', 0.1), fin('replicate:rp_stop', 'cancelled'),
+      sub('replicate:rp_open', 0.15),
+    ]);
+    for (const id of ['replicate:rp_ok', 'replicate:rp_stop', 'replicate:rp_open']) assert.equal(byJob(s, id).actualUsd, null, id);
+    approx(s.estimatedUsd, 0.55);
+    approx(s.chargedUsd, 0);
+    approx(s.totalUsd, 0.55);
+  });
+
+  test('failed jobs on Kie, WaveSpeed and fal without a reported charge keep their estimate', async (t) => {
+    const s = await spendJson(t, [
+      sub('kie:k_one', 0.05), fin('kie:k_one', 'failed'),
+      sub('wavespeed:w_one', 0.06), fin('wavespeed:w_one', 'failed'),
+      sub('fal:f_one', 0.07), fin('fal:f_one', 'failed'),
+    ]);
+    for (const id of ['kie:k_one', 'wavespeed:w_one', 'fal:f_one']) assert.equal(byJob(s, id).actualUsd, null, id);
+    approx(s.estimatedUsd, 0.18);
+    approx(s.totalUsd, 0.18);
+    approx(s.chargedUsd, 0);
+  });
+
+  test('a reported charge on a failed Replicate job wins', async (t) => {
+    const s = await spendJson(t, [sub('replicate:rp_one', 0.2), fin('replicate:rp_one', 'failed', { actualUsd: 0.05 })]);
+    approx(byJob(s, 'replicate:rp_one').actualUsd, 0.05);
+    approx(s.chargedUsd, 0.05);
+    approx(s.totalUsd, 0.05);
+  });
+
+  test('the later finished line decides: failed after succeeded is $0', async (t) => {
+    const s = await spendJson(t, [sub('replicate:rp_one', 0.2), fin('replicate:rp_one', 'succeeded', {}, '2026-11-21T10:05:00Z'),
+      fin('replicate:rp_one', 'failed', {}, '2026-11-21T10:10:00Z')]);
+    assert.equal(byJob(s, 'replicate:rp_one').actualUsd, 0);
+    approx(s.totalUsd, 0);
+  });
+
+  test('the later finished line decides: succeeded after failed keeps the estimate', async (t) => {
+    const s = await spendJson(t, [sub('replicate:rp_one', 0.2), fin('replicate:rp_one', 'failed', {}, '2026-11-21T10:05:00Z'),
+      fin('replicate:rp_one', 'succeeded', {}, '2026-11-21T10:10:00Z')]);
+    assert.equal(byJob(s, 'replicate:rp_one').actualUsd, null);
+    approx(s.totalUsd, 0.2);
+  });
+
+  test('the note, in JSON and in text, mentions failed Replicate jobs', async (t) => {
+    const e = createEnvironment(t);
+    e.writeSpendLines([sub('replicate:rp_one', 0.2), fin('replicate:rp_one', 'failed')]);
+    const j = (await e.run(['spend', '--json'])).json;
+    assert.match(j.note, /failed Replicate/i);
+    const r = await e.run(['spend']);
+    assert.match(r.stdout, /failed Replicate/i);
+  });
+
+  test('spend leaves the log file byte-for-byte unchanged', async (t) => {
+    const e = createEnvironment(t);
+    e.writeSpendLines([sub('replicate:rp_one', 0.2), fin('replicate:rp_one', 'failed'), sub('kie:k_one', 0.05)]);
+    const before = e.spendText();
+    await e.run(['spend', '--json']);
+    await e.run(['spend']);
+    assert.equal(e.spendText(), before);
+  });
+
+  test('run --wait ending in a failed Replicate job logs no charge and does not claim "not charged"', async (t) => {
+    const e = createEnvironment(t, { env: keysFor('replicate'), routes: routesFor('replicate', { states: ['failed'] }) });
+    const r = await e.run(runArgs(...MINI, '--wait'));
+    assert.equal(r.code, 6, `${r.stdout}\n${r.stderr}`);
+    const finished = e.spendLines().find((l) => l.event === 'finished');
+    assert.equal(finished.state, 'failed');
+    assert.equal('actualUsd' in finished, false);
+    assert.doesNotMatch(`${r.error?.message ?? ''}\n${r.stdout}\n${r.stderr}`, /not charged/i);
+  });
+});

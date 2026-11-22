@@ -13,7 +13,9 @@ export default {
   id: 'replicate',
   displayName: 'Replicate',
   envVar: 'REPLICATE_API_TOKEN',
-  billing: { failedJobCharged: false, validationErrorMayCharge: false },
+  // failedJobFree: Replicate reports no charges, but never bills a failed run of these models
+  // (a cancelled one may be billed), so `spend` counts it as $0.
+  billing: { failedJobCharged: false, validationErrorMayCharge: false, failedJobFree: true },
 
   buildRequest(r, { entry, imageUrl }) {
     const input = r.kind === 'image'

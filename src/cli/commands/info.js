@@ -46,6 +46,12 @@ export async function models(app) {
   return EXIT.OK;
 }
 
+/** Fills in $0 for a failed job with no reported charge, on a provider that doesn't bill those. */
+function withFreeFailures(j) {
+  const free = j.actualUsd === null && j.state === 'failed' && ADAPTERS[j.job.split(':')[0]]?.billing?.failedJobFree;
+  return free ? { ...j, actualUsd: 0 } : j;
+}
+
 export async function spend(app) {
   noExtraArgs(app, 0, 'cheapgen spend [--since DATE]');
   let since = null;
@@ -57,7 +63,7 @@ export async function spend(app) {
     if (since === null) return true;
     const at = Date.parse(j.submittedAt ?? j.finishedAt ?? '');
     return !Number.isNaN(at) && at >= since;
-  });
+  }).map(withFreeFailures);
   const sum = (list, field) => list.reduce((total, j) => total + j[field], 0);
   const charged = jobs.filter((j) => j.actualUsd !== null);
   const estimated = jobs.filter((j) => j.actualUsd === null && typeof j.estimateUsd === 'number');
@@ -65,7 +71,8 @@ export async function spend(app) {
   const estimatedUsd = sum(estimated, 'estimateUsd');
   const totalUsd = chargedUsd + estimatedUsd;
   const unknownEstimates = jobs.length - charged.length - estimated.length;
-  const note = '"charged" is what the provider reported; "estimate" is cheapgen\'s. Your provider\'s bill is authoritative.';
+  const note = '"charged" is what the provider reported ($0 for failed Replicate jobs, which it doesn\'t bill); '
+    + '"estimate" is cheapgen\'s. Your provider\'s bill is authoritative.';
   const amount = (j) => (j.actualUsd !== null ? `${usd(j.actualUsd)} charged`
     : typeof j.estimateUsd === 'number' ? `${usd(j.estimateUsd)} estimate` : usd(null));
   const out = jobs.map(({ meta, ...j }) => j);
