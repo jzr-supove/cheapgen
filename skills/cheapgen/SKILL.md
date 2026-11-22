@@ -24,8 +24,8 @@ connected one. Every real run spends the user's money, so follow these rules exa
 5. **Keys are the user's.** Never ask for a key in the chat, and never put one in a command.
    If no provider is connected (exit 3, `no_keys`), tell the user to set `KIE_API_KEY`,
    `REPLICATE_API_TOKEN`, `WAVESPEED_API_KEY` or `FAL_KEY`, or to run
-   `cheapgen config set-key <provider>` themselves in a terminal (it reads the key from
-   standard input).
+   `cheapgen config set-key <provider>` themselves in a terminal (it asks for
+   the key and hides it).
 6. **Don't change the user's config** (`cheapgen config set ...`) unless they ask.
 
 ## Models

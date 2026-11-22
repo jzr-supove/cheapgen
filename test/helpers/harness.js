@@ -111,6 +111,11 @@ export function createEnvironment(t, opts = {}) {
         dataDir: opts.dataDir ?? DATA_DIR,
       };
       if (extra.stdin !== undefined) io.stdin = extra.stdin;
+      if (extra.promptSecret !== undefined) {
+        io.promptSecret = extra.promptSecret;
+        // Never fall back to reading the real process stdin if a command ignores the prompt.
+        if (io.stdin === undefined) io.stdin = '';
+      }
       const code = await main(argv, io);
       transcript.push(stdout, stderr);
       fake.assertClean();

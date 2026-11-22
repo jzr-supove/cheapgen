@@ -7,6 +7,7 @@ import { loadConfig } from '../config.js';
 import { createPriceCache } from '../pricing/cache.js';
 import { redact } from '../http.js';
 import { createOutput } from './output.js';
+import { readSecret } from './prompt.js';
 import { COMMANDS, HELP } from './commands/index.js';
 
 const OPTIONS = {
@@ -38,7 +39,8 @@ const OPTIONS = {
 
 /**
  * @param {string[]} argv  arguments after the program name
- * @param {object} [io]    { env, fetch, stdout, stderr, stdin, homedir, cwd, now, sleep, dataDir, platform }
+ * @param {object} [io]    { env, fetch, stdout, stderr, stdin, promptSecret, homedir, cwd, now, sleep,
+ *                         dataDir, platform }
  * @returns {Promise<number>} exit code
  */
 export async function main(argv, io = {}) {
@@ -102,6 +104,9 @@ async function withDefaults(io) {
     stderr: io.stderr ?? process.stderr,
     stdin: io.stdin,
     readStdin: io.readStdin ?? (io.stdin === undefined ? readProcessStdin : async () => io.stdin),
+    // Only set when a person is at the terminal. The prompt goes to stderr, so stdout stays clean.
+    promptSecret: io.promptSecret ?? (io.stdin === undefined && process.stdin.isTTY
+      ? (label) => readSecret({ input: process.stdin, output: process.stderr, label }) : null),
     homedir: io.homedir ?? os.homedir(),
     cwd: io.cwd ?? process.cwd(),
     now: io.now ?? (() => new Date()),

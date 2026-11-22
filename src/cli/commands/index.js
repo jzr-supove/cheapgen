@@ -17,7 +17,10 @@ Usage:
   cheapgen wait <job>                wait for a job, then download it
   cheapgen spend [--since DATE]      summarize the local spend log
   cheapgen prices [model] [--check]  show bundled prices and how old they are
-  cheapgen config show | path | set <key> <value> | set-key <provider>
+  cheapgen config set-key <provider> store an API key (asks for it)
+  cheapgen config get-key <provider> show whether a key is set (last 4 characters)
+  cheapgen config list               list keys and settings
+  cheapgen config show | path | set <key> <value>
 
 Parameters:
   --prompt TEXT      what to generate
@@ -35,5 +38,5 @@ Run options:
   --json             machine-readable output
 
 Keys: set KIE_API_KEY, REPLICATE_API_TOKEN, WAVESPEED_API_KEY or FAL_KEY, or store one with
-\`cheapgen config set-key <provider>\` (the key is read from standard input).
+\`cheapgen config set-key <provider>\`, which asks for the key and hides it.
 `;
