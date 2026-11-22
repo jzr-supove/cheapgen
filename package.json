@@ -1,17 +1,32 @@
 {
   "name": "cheapgen",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Send each AI video or image generation request to the cheapest connected provider (Kie, Replicate, WaveSpeed, fal).",
+  "keywords": ["ai", "video", "image", "generation", "cli", "seedance", "seedream", "kie", "replicate", "wavespeed", "fal", "claude-code"],
+  "license": "MIT",
+  "author": "jzr-supove (https://github.com/jzr-supove)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzr-supove/cheapgen.git"
+  },
+  "homepage": "https://github.com/jzr-supove/cheapgen#readme",
+  "bugs": "https://github.com/jzr-supove/cheapgen/issues",
   "type": "module",
   "bin": {
-    "cheapgen": "./bin/cheapgen.js"
+    "cheapgen": "bin/cheapgen.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "data/",
+    "skills/"
+  ],
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test \"test/**/*.test.js\""
-  },
-  "license": "MIT"
+    "test": "node --test \"test/**/*.test.js\"",
+    "prepublishOnly": "npm test"
+  }
 }
