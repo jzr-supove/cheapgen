@@ -33,6 +33,8 @@ const OPTIONS = {
   search: { type: 'string' },
   since: { type: 'string' },
   check: { type: 'boolean' },
+  agent: { type: 'string', multiple: true },
+  project: { type: 'boolean' },
   help: { type: 'boolean', short: 'h' },
   version: { type: 'boolean' },
 };

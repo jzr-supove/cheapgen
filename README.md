@@ -128,23 +128,28 @@ Settings live in `~/.cheapgen/config.json`. A `.cheapgen.json` in the current fo
 
 For one run, use `--provider ID` or `--exclude ID`.
 
-## Claude Code skill
+## Use with AI agents
 
-The package includes a skill that lets [Claude Code](https://claude.com/claude-code) quote and run
-generations for you. It quotes first and asks before spending anything. After installing cheapgen,
-copy the skill:
+The package includes a skill that lets a coding agent quote and run generations for you. It
+quotes first and asks before spending anything. After installing cheapgen, add the skill:
 
 ```sh
-# macOS and Linux
-mkdir -p ~/.claude/skills
-cp -r "$(npm root -g)/cheapgen/skills/cheapgen" ~/.claude/skills/
+cheapgen skill install
 ```
 
-```powershell
-# Windows PowerShell
-New-Item -ItemType Directory -Force "$HOME\.claude\skills"
-Copy-Item -Recurse -Force "$(npm root -g)\cheapgen\skills\cheapgen" "$HOME\.claude\skills\"
-```
+This finds the agents on your computer and copies the skill into their folders:
+
+| Agent | Folder | Install for it alone |
+|---|---|---|
+| Claude Code | `~/.claude/skills/cheapgen` | `cheapgen skill install --agent claude` |
+| Codex, Cursor and other [Agent Skills](https://agentskills.io) agents | `~/.agents/skills/cheapgen` | `cheapgen skill install --agent codex` |
+| Cursor only | `~/.cursor/skills/cheapgen` | `cheapgen skill install --agent cursor` |
+
+- `--project` installs into the current folder instead (`.claude/skills`, `.agents/skills`), so
+  you can commit it with a project.
+- After `npm update -g cheapgen`, run `cheapgen skill install` again to refresh the copies.
+- `cheapgen skill uninstall` removes them. It only ever touches the `cheapgen` skill folder.
+- For other agents, `npx skills add jzr-supove/cheapgen` installs the same skill from GitHub.
 
 ## Exit codes
 
