@@ -151,6 +151,36 @@ This finds the agents on your computer and copies the skill into their folders:
 - `cheapgen skill uninstall` removes them. It only ever touches the `cheapgen` skill folder.
 - For other agents, `npx skills add jzr-supove/cheapgen` installs the same skill from GitHub.
 
+### MCP server
+
+`cheapgen mcp` runs an [MCP](https://modelcontextprotocol.io) server on stdin and stdout, for
+apps that use MCP tools rather than skills. Add it with:
+
+```sh
+claude mcp add cheapgen -- cheapgen mcp     # Claude Code
+codex mcp add cheapgen -- cheapgen mcp      # Codex
+```
+
+For Cursor (`~/.cursor/mcp.json`), Claude Desktop and other apps, add this to their MCP settings:
+
+```json
+{ "mcpServers": { "cheapgen": { "command": "cheapgen", "args": ["mcp"] } } }
+```
+
+Store your keys with `cheapgen config set-key`, since not every app passes environment variables
+on to the servers it starts.
+
+It has seven tools: `models`, `providers`, `quote`, `run`, `job_status`, `wait_job` and `spend`.
+
+- **`run` only takes a quote.** The agent calls `quote` first, and `run` starts exactly the
+  request that was priced. A quote lasts 10 minutes and starts one job. If the price went up
+  since the quote, `run` stops and asks for a new quote.
+- **The cost limit stays yours.** No tool can raise it. Above the limit, apps that support it ask
+  you directly to confirm the price; the agent can't answer for you. Other apps refuse the run,
+  and you can raise `maxCostPerRun` or use the CLI.
+- `run` returns a job id at once. `wait_job` waits up to two minutes per call and saves the result
+  to `./cheapgen-out` in the folder the app started the server in.
+
 ## Exit codes
 
 | Code | Meaning |

@@ -4,8 +4,9 @@ import { status, wait } from './jobs.js';
 import { providers, models, spend, prices } from './info.js';
 import { config } from './config.js';
 import { skill } from './skill.js';
+import { mcp } from './mcp.js';
 
-export const COMMANDS = { providers, models, quote, run, status, wait, spend, prices, config, skill };
+export const COMMANDS = { providers, models, quote, run, status, wait, spend, prices, config, skill, mcp };
 
 export const HELP = `cheapgen: send each AI video or image request to the cheapest connected provider.
 
@@ -24,6 +25,7 @@ Usage:
   cheapgen config show | path | set <key> <value>
   cheapgen skill install [--agent claude|codex|cursor] [--project]
                                      add the agent skill (also: skill uninstall, skill path)
+  cheapgen mcp                       run the MCP server on stdin/stdout, for AI agents
 
 Parameters:
   --prompt TEXT      what to generate

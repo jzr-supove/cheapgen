@@ -115,6 +115,7 @@ async function withDefaults(io) {
     sleep: io.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms))),
     dataDir: io.dataDir ?? DEFAULT_DATA_DIR,
     platform: io.platform ?? process.platform,
+    mcpInput: io.mcpInput,
   };
 }
 
