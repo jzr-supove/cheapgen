@@ -98,8 +98,17 @@ describe('quote on the real catalog with a fal key', () => {
   });
 });
 
-describe('prices.json: fal prices above a model\'s base price opt out of the live unit price', () => {
-  test('exactly the entries above the model\'s lowest unit price are flagged', () => {
+describe('prices.json: fal prices that differ from a model\'s base price opt out of the live unit price', () => {
+  // fal's pricing API gives one price per endpoint: the rate most of the model's sizes share, or
+  // the lowest when no rate is shared. A dearer size, or a 4k rate below it, keeps the bundled price.
+  const baseOf = (units) => {
+    const count = new Map();
+    for (const u of units) count.set(u, (count.get(u) ?? 0) + 1);
+    const most = Math.max(...count.values());
+    return Math.min(...[...count].filter(([, n]) => n === most).map(([u]) => u));
+  };
+
+  test('exactly the entries whose unit price differs from the base are flagged', () => {
     const byModel = new Map();
     for (const e of catalog.prices.entries) {
       if (e.provider !== 'fal' || !['perImage', 'perToken'].includes(e.pricing.type)) continue;
@@ -108,15 +117,15 @@ describe('prices.json: fal prices above a model\'s base price opt out of the liv
     assert.ok(byModel.size > 0);
     let flagged = 0;
     for (const [model, entries] of byModel) {
-      const lowest = Math.min(...entries.map((e) => unitOf(e.pricing)));
+      const base = baseOf(entries.map((e) => unitOf(e.pricing)));
       for (const e of entries) {
-        const above = unitOf(e.pricing) > lowest;
-        if (above) flagged += 1;
-        assert.equal(e.live?.falUnitPrice === false, above,
-          `${model} ${JSON.stringify(e.when)} at ${unitOf(e.pricing)} (lowest ${lowest})`);
+        const differs = unitOf(e.pricing) !== base;
+        if (differs) flagged += 1;
+        assert.equal(e.live?.falUnitPrice === false, differs,
+          `${model} ${JSON.stringify(e.when)} at ${unitOf(e.pricing)} (base ${base})`);
       }
     }
-    assert.ok(flagged >= 3, 'nano-banana-pro 4K, seedance-2.5 1080p and the dearer nano-banana-2.1 sizes');
+    assert.ok(flagged >= 5, 'nano-banana-pro 4K, seedance-2.5 1080p, the dearer nano-banana-2.1 sizes, seedance 4k');
   });
 });
 

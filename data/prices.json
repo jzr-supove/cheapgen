@@ -301,6 +301,23 @@
       }
     },
     {
+      "provider": "kie",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "4k"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 1.04
+      },
+      "sourceUrl": "https://kie.ai/seedance-2-0?model=bytedance%2Fseedance-2",
+      "verifiedOn": "2026-11-23",
+      "live": {
+        "kieDescription": "bytedance/seedance-2, 4K no video input"
+      }
+    },
+    {
       "provider": "replicate",
       "model": "seedance-2.0",
       "mode": "*",
@@ -341,6 +358,20 @@
       },
       "sourceUrl": "https://replicate.com/bytedance/seedance-2.0",
       "verifiedOn": "2026-11-21"
+    },
+    {
+      "provider": "replicate",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "4k"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 1
+      },
+      "sourceUrl": "https://replicate.com/bytedance/seedance-2.0",
+      "verifiedOn": "2026-11-23"
     },
     {
       "provider": "wavespeed",
@@ -388,6 +419,21 @@
       "notes": "Discounted price shown on WaveSpeed's page; list price $0.6."
     },
     {
+      "provider": "wavespeed",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "4k"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 1.08
+      },
+      "sourceUrl": "https://wavespeed.ai/models/bytedance/seedance-2.0/text-to-video/llms.txt",
+      "verifiedOn": "2026-11-23",
+      "notes": "Discounted price shown on WaveSpeed's page; list price $1.2."
+    },
+    {
       "provider": "fal",
       "model": "seedance-2.0",
       "mode": "*",
@@ -434,6 +480,25 @@
       "sourceUrl": "https://fal.ai/models/bytedance/seedance-2.0/text-to-video/llms.txt",
       "verifiedOn": "2026-11-21",
       "notes": "fal bills by tokens: width x height x seconds x 24 / 1024. fal's own per-second figures differ slightly."
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.0",
+      "mode": "*",
+      "when": {
+        "resolution": "4k"
+      },
+      "pricing": {
+        "type": "perToken",
+        "usdPer1kTokens": 0.008,
+        "fps": 24
+      },
+      "sourceUrl": "https://fal.ai/models/bytedance/seedance-2.0/text-to-video/llms.txt",
+      "verifiedOn": "2026-11-23",
+      "notes": "fal bills by tokens: width x height x seconds x 24 / 1024. fal's own per-second figures differ slightly. 4k has its own token rate.",
+      "live": {
+        "falUnitPrice": false
+      }
     },
     {
       "provider": "kie",
@@ -583,6 +648,23 @@
       }
     },
     {
+      "provider": "kie",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "4k"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 1.255
+      },
+      "sourceUrl": "https://kie.ai/seedance-2-5",
+      "verifiedOn": "2026-11-23",
+      "live": {
+        "kieDescription": "bytedance/seedance-2-5, 4K no video"
+      }
+    },
+    {
       "provider": "replicate",
       "model": "seedance-2.5",
       "mode": "*",
@@ -656,6 +738,21 @@
       "notes": "Discounted price shown on WaveSpeed's page; list price $0.9."
     },
     {
+      "provider": "wavespeed",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "4k"
+      },
+      "pricing": {
+        "type": "perSecond",
+        "usd": 1.62
+      },
+      "sourceUrl": "https://wavespeed.ai/models/bytedance/seedance-2.5/text-to-video/llms.txt",
+      "verifiedOn": "2026-11-23",
+      "notes": "Discounted price shown on WaveSpeed's page; list price $1.8."
+    },
+    {
       "provider": "fal",
       "model": "seedance-2.5",
       "mode": "*",
@@ -702,6 +799,25 @@
       "sourceUrl": "https://fal.ai/models/bytedance/seedance-2.5/text-to-video/llms.txt",
       "verifiedOn": "2026-11-21",
       "notes": "fal bills by tokens: width x height x seconds x 24 / 1024. fal's own per-second figures differ slightly.",
+      "live": {
+        "falUnitPrice": false
+      }
+    },
+    {
+      "provider": "fal",
+      "model": "seedance-2.5",
+      "mode": "*",
+      "when": {
+        "resolution": "4k"
+      },
+      "pricing": {
+        "type": "perToken",
+        "usdPer1kTokens": 0.0094,
+        "fps": 24
+      },
+      "sourceUrl": "https://fal.ai/models/bytedance/seedance-2.5/text-to-video/llms.txt",
+      "verifiedOn": "2026-11-23",
+      "notes": "fal bills by tokens: width x height x seconds x 24 / 1024. fal's own per-second figures differ slightly. 4k has its own token rate.",
       "live": {
         "falUnitPrice": false
       }

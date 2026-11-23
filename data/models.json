@@ -113,7 +113,8 @@
     "resolutions": [
       "480p",
       "720p",
-      "1080p"
+      "1080p",
+      "4k"
     ],
     "durations": {
       "min": 4,
@@ -218,7 +219,8 @@
     "resolutions": [
       "480p",
       "720p",
-      "1080p"
+      "1080p",
+      "4k"
     ],
     "durations": {
       "min": 4,

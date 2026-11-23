@@ -40,9 +40,12 @@ describe('data/models.json', () => {
     }
   });
 
-  test('video resolutions are only 480p, 720p and 1080p, and 4k appears nowhere in them', () => {
-    const allowed = new Set(['480p', '720p', '1080p']);
+  test('video resolutions are 480p, 720p and 1080p, plus 4k only where ByteDance makes it natively', () => {
+    const NATIVE_4K = new Set(['seedance-2.0', 'seedance-2.5']);
+    const allowedFor = (id) => new Set(['480p', '720p', '1080p', ...(NATIVE_4K.has(id) ? ['4k'] : [])]);
+    for (const id of NATIVE_4K) assert.ok(catalog.models[id].resolutions.includes('4k'), `${id} lists 4k`);
     for (const id of VIDEO) {
+      const allowed = allowedFor(id);
       const m = catalog.models[id];
       for (const res of m.resolutions) assert.ok(allowed.has(res), `${id}: ${res}`);
       for (const [p, e] of Object.entries(m.providers)) {
@@ -51,10 +54,12 @@ describe('data/models.json', () => {
     }
     for (const e of catalog.prices.entries) {
       if (!VIDEO.includes(e.model)) continue;
+      const allowed = allowedFor(e.model);
       for (const res of [e.when?.resolution ?? []].flat()) assert.ok(allowed.has(res), `${e.provider} ${e.model}: ${res}`);
     }
     for (const [series, table] of Object.entries(catalog.frameSizes)) {
       if (!series.startsWith('seedance')) continue;
+      const allowed = allowedFor(series);
       for (const res of Object.keys(table)) assert.ok(allowed.has(res), `${series}: ${res}`);
     }
   });
@@ -77,7 +82,7 @@ describe('data/prices.json', () => {
       const label = `${e.provider} ${e.model} ${JSON.stringify(e.when)}`;
       assert.match(e.sourceUrl ?? '', /^https:\/\/\S+$/, label);
       assert.match(e.verifiedOn ?? '', /^\d{4}-\d{2}-\d{2}$/, label);
-      assert.ok(Date.parse(`${e.verifiedOn}T00:00:00Z`) <= NOW.getTime(), `${label}: verifiedOn is in the future`);
+      assert.ok(Date.parse(`${e.verifiedOn}T00:00:00Z`) <= Date.now(), `${label}: verifiedOn is in the future`);
     }
   });
 

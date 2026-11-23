@@ -19,8 +19,9 @@ const endpointOf = endpointPath;
 const appIdOf = (endpoint) => endpoint.split('/').slice(0, 2).join('/');
 
 /**
- * fal's API gives one base price per endpoint. Sizes and resolutions billed at a higher rate are
- * marked `live.falUnitPrice: false` in the price data, and use the bundled price.
+ * fal's API gives one base price per endpoint. Sizes and resolutions billed at another rate (a
+ * dearer size, or Seedance's cheaper per-token 4k rate) are marked `live.falUnitPrice: false` in
+ * the price data, and use the bundled price.
  */
 export const hasLivePrice = (priceEntry) => priceEntry?.live?.falUnitPrice !== false;
 

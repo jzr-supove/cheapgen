@@ -39,7 +39,8 @@ Video: `seedance-2.0-mini` (cheapest), `seedance-2.0-fast`, `seedance-2.0`,
 
 - `--prompt TEXT`: what to generate. Quote it for the shell; prefer single quotes.
 - `--image FILE|URL`: first frame, which makes it image-to-video. Local files are uploaded.
-- Video: `--res 480p|720p|1080p` (default 720p), `--duration SECONDS` (default 5),
+- Video: `--res 480p|720p|1080p|4k` (default 720p; 4k only on `seedance-2.0` and `seedance-2.5`,
+  as a 10-bit H.265/HEVC file that some players can't open), `--duration SECONDS` (default 5),
   `--aspect 16:9|9:16|1:1|4:3|3:4|21:9` (default 16:9), `--audio` / `--no-audio` (default on).
 - Image: `--size` (default 1K, or the model's smallest; `cheapgen models` lists each model's
   sizes, such as 1.5K or 3K), `--aspect`.

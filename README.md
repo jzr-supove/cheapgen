@@ -86,6 +86,9 @@ cheapgen wait kie:task_123
 
 `cheapgen models` shows each model's resolutions or sizes, and which providers offer it.
 
+`seedance-2.0` and `seedance-2.5` also come in 4K (`--res 4k`), about $1 to $1.30 a second at the
+cheapest provider. The file is 10-bit H.265/HEVC, which some players can't open; VLC and mpv can.
+
 ## Spending safely
 
 - **Cost limit.** A run that costs more than $1, or whose price is unknown, stops until you confirm

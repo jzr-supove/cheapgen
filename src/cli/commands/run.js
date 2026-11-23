@@ -14,6 +14,8 @@ import { finishJob, describeFinished, downloadDirFrom } from './jobs.js';
 
 const EPS = 1e-9;
 
+export const HEVC_NOTE = '4k video comes as 10-bit H.265/HEVC, which some players can\'t play. VLC and mpv can.';
+
 export async function run(app) {
   const { flags, out } = app;
   const request = requestFrom(app, { requirePrompt: true });
@@ -24,6 +26,7 @@ export async function run(app) {
   const timeoutMs = timeoutFlag(app) ?? TIMEOUT_MS[request.kind];
 
   const { ranked, pinned } = await rankCandidates(app, request, { provider, exclude });
+  if (request.kind === 'video' && request.resolution === '4k') out.notice(`Note: ${HEVC_NOTE}`);
   const first = ranked[0];
   const overLimit = first.usd !== null && first.usd > limit + EPS;
 
