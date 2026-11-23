@@ -3,7 +3,7 @@
   "name": "cheapgen",
   "displayName": "cheapgen",
   "description": "Sends each AI video or image generation to the cheapest provider you have a key for (Kie, Replicate, WaveSpeed, fal). Quotes first and asks before spending.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "jzr-supove",
     "url": "https://github.com/jzr-supove"

@@ -1,6 +1,6 @@
 {
   "name": "cheapgen",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Sends each AI video or image generation to the cheapest provider you have a key for (Kie, Replicate, WaveSpeed, fal). Quotes first and asks before spending.",
   "mcpServers": {
     "cheapgen": {

@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "The cheapgen plugin: cheapest-provider AI video and image generation.",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "plugins": [
     {
