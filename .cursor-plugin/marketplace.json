@@ -1,0 +1,18 @@
+{
+  "name": "cheapgen",
+  "owner": {
+    "name": "jzr-supove",
+    "url": "https://github.com/jzr-supove"
+  },
+  "metadata": {
+    "description": "The cheapgen plugin: cheapest-provider AI video and image generation.",
+    "version": "0.1.1"
+  },
+  "plugins": [
+    {
+      "name": "cheapgen",
+      "source": "./",
+      "description": "Sends each AI video or image generation to the cheapest provider you have a key for (Kie, Replicate, WaveSpeed, fal). Quotes first and asks before spending."
+    }
+  ]
+}

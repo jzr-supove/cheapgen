@@ -1,0 +1,66 @@
+{
+  "name": "cheapgen",
+  "version": "0.1.1",
+  "description": "Sends each AI video or image generation to the cheapest provider you have a key for (Kie, Replicate, WaveSpeed, fal). Quotes first and asks before spending.",
+  "author": {
+    "name": "jzr-supove",
+    "url": "https://github.com/jzr-supove"
+  },
+  "homepage": "https://github.com/jzr-supove/cheapgen",
+  "repository": "https://github.com/jzr-supove/cheapgen",
+  "license": "MIT",
+  "keywords": [
+    "ai-video",
+    "ai-image",
+    "generation",
+    "seedance",
+    "mcp",
+    "pricing"
+  ],
+  "userConfig": {
+    "kie_api_key": {
+      "type": "string",
+      "title": "Kie API key",
+      "description": "Optional. Leave empty to use a key stored with `cheapgen config set-key kie`.",
+      "sensitive": true,
+      "required": false
+    },
+    "replicate_api_token": {
+      "type": "string",
+      "title": "Replicate API key",
+      "description": "Optional. Leave empty to use a key stored with `cheapgen config set-key replicate`.",
+      "sensitive": true,
+      "required": false
+    },
+    "wavespeed_api_key": {
+      "type": "string",
+      "title": "WaveSpeed API key",
+      "description": "Optional. Leave empty to use a key stored with `cheapgen config set-key wavespeed`.",
+      "sensitive": true,
+      "required": false
+    },
+    "fal_key": {
+      "type": "string",
+      "title": "fal API key",
+      "description": "Optional. Leave empty to use a key stored with `cheapgen config set-key fal`.",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "mcpServers": {
+    "cheapgen": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "cheapgen@latest",
+        "mcp"
+      ],
+      "env": {
+        "KIE_API_KEY": "${user_config.kie_api_key}",
+        "REPLICATE_API_TOKEN": "${user_config.replicate_api_token}",
+        "WAVESPEED_API_KEY": "${user_config.wavespeed_api_key}",
+        "FAL_KEY": "${user_config.fal_key}"
+      }
+    }
+  }
+}

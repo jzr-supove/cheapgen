@@ -4,7 +4,9 @@ Several API providers sell the same AI video and image models at different price
 prices your request on each provider you have a key for and sends it to the cheapest one.
 
 It works with [Kie](https://kie.ai), [Replicate](https://replicate.com),
-[WaveSpeed](https://wavespeed.ai) and [fal](https://fal.ai).
+[WaveSpeed](https://wavespeed.ai) and [fal](https://fal.ai). Coding agents such as Claude Code,
+Codex, GitHub Copilot and Cursor can use it too, through a skill, an MCP server or a plugin
+([Use with AI agents](#use-with-ai-agents)).
 
 ```console
 $ cheapgen quote seedance-2.0-mini --res 480p --duration 4
@@ -17,7 +19,8 @@ seedance-2.0-mini · text-to-video · 480p · 4s · 16:9 · audio on
 
 > **Early version.** Kie, WaveSpeed and Replicate have been tried with real image, text-to-video and
 > image-to-video runs. fal has only been tried for prices, balance and errors; its generation
-> requests were built from its docs.
+> requests were built from its docs. The MCP server and the plugins are checked by tests and, for
+> Claude Code and Codex, by the apps' own plugin tools, but haven't yet been used in every app.
 
 ## Install
 
@@ -142,26 +145,72 @@ This finds the agents on your computer and copies the skill into their folders:
 | Agent | Folder | Install for it alone |
 |---|---|---|
 | Claude Code | `~/.claude/skills/cheapgen` | `cheapgen skill install --agent claude` |
-| Codex, Cursor and other [Agent Skills](https://agentskills.io) agents | `~/.agents/skills/cheapgen` | `cheapgen skill install --agent codex` |
+| Codex, OpenCode, Cursor and other [Agent Skills](https://agentskills.io) agents | `~/.agents/skills/cheapgen` | `cheapgen skill install --agent codex` |
+| GitHub Copilot (CLI and VS Code) | `~/.copilot/skills/cheapgen` | `cheapgen skill install --agent copilot` |
 | Cursor only | `~/.cursor/skills/cheapgen` | `cheapgen skill install --agent cursor` |
 
 - `--project` installs into the current folder instead (`.claude/skills`, `.agents/skills`), so
-  you can commit it with a project.
+  you can commit it with a project. For VS Code, add `--agent copilot`, which uses
+  `.github/skills`.
+- `--agent opencode` is the same as `--agent codex`: OpenCode reads `~/.agents/skills`.
 - After `npm update -g cheapgen`, run `cheapgen skill install` again to refresh the copies.
 - `cheapgen skill uninstall` removes them. It only ever touches the `cheapgen` skill folder.
 - For other agents, `npx skills add jzr-supove/cheapgen` installs the same skill from GitHub.
 
+### Plugins
+
+The plugins bundle the skill and the MCP server below, and start it with
+`npx -y cheapgen@latest mcp`, so you don't need to install cheapgen first.
+
+```sh
+# Claude Code, inside a session (asks for your keys and keeps them in secure storage)
+/plugin marketplace add jzr-supove/cheapgen
+/plugin install cheapgen@cheapgen
+
+# Codex
+codex plugin marketplace add jzr-supove/cheapgen
+codex plugin add cheapgen@cheapgen
+
+# GitHub Copilot CLI
+copilot plugin install jzr-supove/cheapgen
+
+# Antigravity CLI
+agy plugin install https://github.com/jzr-supove/cheapgen
+
+# Cursor: Customize, then import a plugin from the GitHub repository jzr-supove/cheapgen
+
+# Gemini CLI, where you still have it
+gemini extensions install https://github.com/jzr-supove/cheapgen
+```
+
+Every key setting is optional. Keys stored with `npx cheapgen config set-key <provider>` work
+everywhere. Only Claude Code and Gemini CLI ask for keys, and Codex and Copilot don't pass your
+environment variables to plugin servers, so with the others, store your keys that way.
+
 ### MCP server
 
 `cheapgen mcp` runs an [MCP](https://modelcontextprotocol.io) server on stdin and stdout, for
-apps that use MCP tools rather than skills. Add it with:
+apps that use MCP tools rather than skills. With cheapgen installed, add it with the lines below.
+Without installing it, use `npx -y cheapgen@latest mcp` as the command instead.
 
 ```sh
 claude mcp add cheapgen -- cheapgen mcp     # Claude Code
 codex mcp add cheapgen -- cheapgen mcp      # Codex
+copilot mcp add cheapgen -- cheapgen mcp    # GitHub Copilot CLI, also used by VS Code
 ```
 
-For Cursor (`~/.cursor/mcp.json`), Claude Desktop and other apps, add this to their MCP settings:
+For OpenCode, add it to `~/.config/opencode/opencode.json`:
+
+```json
+{ "mcp": { "servers": { "cheapgen": { "type": "local", "command": ["cheapgen", "mcp"] } } } }
+```
+
+For Cursor, this button adds it in one click (it runs `npx -y cheapgen@latest mcp`):
+
+[![Add cheapgen to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=cheapgen&config=eyJjb21tYW5kIjoibnB4IC15IGNoZWFwZ2VuQGxhdGVzdCBtY3AifQ%3D%3D)
+
+For Cursor by hand (`~/.cursor/mcp.json`), Claude Desktop and other apps, add this to their MCP
+settings:
 
 ```json
 { "mcpServers": { "cheapgen": { "command": "cheapgen", "args": ["mcp"] } } }
@@ -179,7 +228,8 @@ It has seven tools: `models`, `providers`, `quote`, `run`, `job_status`, `wait_j
   you directly to confirm the price; the agent can't answer for you. Other apps refuse the run,
   and you can raise `maxCostPerRun` or use the CLI.
 - `run` returns a job id at once. `wait_job` waits up to two minutes per call and saves the result
-  to `./cheapgen-out` in the folder the app started the server in.
+  to `./cheapgen-out` in the folder the app started the server in. If that is a plugin's own
+  folder or a drive root, it uses `~/cheapgen-out` instead.
 
 ## Exit codes
 

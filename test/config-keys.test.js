@@ -188,6 +188,19 @@ describe('config get-key', () => {
     assert.equal(r.json.masked, mask(KEYS.KIE_API_KEY));
   });
 
+  // An app that starts cheapgen may pass a setting the person left empty as "" or as its
+  // unfilled ${...} placeholder. Neither is a key, and neither may hide a stored one.
+  for (const [label, value] of [['empty', ''], ['blank', '   '], ['an unfilled ${...} placeholder', '${user_config.kie_api_key}'],
+    ['an unfilled $VAR placeholder', '$KIE_API_KEY']]) {
+    test(`an environment variable that is ${label} is ignored and the stored key is used`, async (t) => {
+      const e = createEnvironment(t, { env: { KIE_API_KEY: value } });
+      await e.run(['config', 'set-key', 'kie'], { stdin: 'file-stored-kie-key-ZZZZ\n' });
+      const r = await e.run(['config', 'get-key', 'kie', '--json']);
+      assert.equal(r.json.source, 'file');
+      assert.equal(r.json.masked, mask('file-stored-kie-key-ZZZZ'));
+    });
+  }
+
   test('a provider with no key exits 3 with not_connected and says how to add one', async (t) => {
     const e = createEnvironment(t);
     const r = await e.run(['config', 'get-key', 'replicate', '--json']);

@@ -128,7 +128,10 @@ export function loadConfig(io) {
   const keySources = {};
   for (const id of PROVIDER_IDS) {
     const fromEnv = io.env[ENV_VARS[id]];
-    if (typeof fromEnv === 'string' && fromEnv.trim()) { keys[id] = fromEnv.trim(); keySources[id] = 'env'; }
+    // An app that starts cheapgen can pass an unset setting as its unfilled placeholder
+    // (`${user_config.x}`, `$VAR`). That is not a key, so it must not hide a stored one.
+    const unfilled = typeof fromEnv === 'string' && /^\$(\{[^}]*\}|[A-Za-z_]\w*)$/.test(fromEnv.trim());
+    if (typeof fromEnv === 'string' && fromEnv.trim() && !unfilled) { keys[id] = fromEnv.trim(); keySources[id] = 'env'; }
     else if (fileKeys[id]) { keys[id] = fileKeys[id]; keySources[id] = 'file'; }
     else keySources[id] = null;
   }

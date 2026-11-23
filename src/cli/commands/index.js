@@ -23,7 +23,7 @@ Usage:
   cheapgen config get-key <provider> show whether a key is set (last 4 characters)
   cheapgen config list               list keys and settings
   cheapgen config show | path | set <key> <value>
-  cheapgen skill install [--agent claude|codex|cursor] [--project]
+  cheapgen skill install [--agent claude|codex|cursor|copilot|opencode] [--project]
                                      add the agent skill (also: skill uninstall, skill path)
   cheapgen mcp                       run the MCP server on stdin/stdout, for AI agents
 

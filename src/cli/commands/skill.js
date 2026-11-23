@@ -1,5 +1,5 @@
 // `cheapgen skill install|uninstall|path`: copy the bundled agent skill into the folders that
-// Claude Code, Codex, Cursor and other Agent Skills clients read.
+// Claude Code, Codex, Cursor, GitHub Copilot, OpenCode and other Agent Skills clients read.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,15 +8,19 @@ import { EXIT, usageError } from '../../errors.js';
 export const BUNDLED_SKILL = fileURLToPath(new URL('../../../skills/cheapgen/', import.meta.url)).replace(/[\\/]$/, '');
 const NAME = 'cheapgen';
 
-/** Where each agent reads skills, relative to the home folder or the project folder. */
+/** Where each agent reads skills, relative to the home folder and to the project folder. */
 const TARGETS = {
-  claude: path.join('.claude', 'skills'),
-  codex: path.join('.agents', 'skills'),
-  cursor: path.join('.cursor', 'skills'),
+  claude: { home: path.join('.claude', 'skills'), project: path.join('.claude', 'skills') },
+  codex: { home: path.join('.agents', 'skills'), project: path.join('.agents', 'skills') },
+  cursor: { home: path.join('.cursor', 'skills'), project: path.join('.cursor', 'skills') },
+  // VS Code reads project skills only from .github/skills; the Copilot CLI reads that too.
+  copilot: { home: path.join('.copilot', 'skills'), project: path.join('.github', 'skills') },
+  // OpenCode reads the shared .agents/skills folder, the same one as Codex.
+  opencode: { home: path.join('.agents', 'skills'), project: path.join('.agents', 'skills') },
 };
 const AGENTS = Object.keys(TARGETS);
 const CHOICES = `--agent ${AGENTS.join('|')}`;
-const USAGE = 'cheapgen skill install|uninstall|path [--agent claude|codex|cursor] [--project]';
+const USAGE = `cheapgen skill install|uninstall|path [${CHOICES}] [--project]`;
 
 export async function skill(app) {
   const [sub, ...rest] = app.args;
@@ -54,13 +58,32 @@ function chosenAgents(app) {
   const found = [];
   if (has('.claude')) found.push('claude');
   if (has('.codex') || has('.agents') || has('.cursor')) found.push('codex');
+  if (has('.copilot')) found.push('copilot');
+  if (has(path.join('.config', 'opencode'))) found.push('opencode');
   if (!found.length) {
-    throw usageError(`no agent folder found (~/.claude, ~/.codex, ~/.agents or ~/.cursor). Choose one with ${CHOICES}.`);
+    throw usageError('no agent folder found (~/.claude, ~/.codex, ~/.agents, ~/.cursor, ~/.copilot or ~/.config/opencode). '
+      + `Choose one with ${CHOICES}.`);
   }
   return found;
 }
 
-const targetOf = (app, agent) => path.join(app.flags.project ? app.io.cwd : app.io.homedir, TARGETS[agent], NAME);
+const targetOf = (app, agent) => (app.flags.project
+  ? path.join(app.io.cwd, TARGETS[agent].project, NAME)
+  : path.join(app.io.homedir, TARGETS[agent].home, NAME));
+
+/** Each chosen agent's folder, once: agents that share a folder get one entry, named after the first. */
+function planFor(app) {
+  const seen = new Set();
+  const plan = [];
+  for (const agent of chosenAgents(app)) {
+    const dir = targetOf(app, agent);
+    const key = path.resolve(dir).toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    plan.push({ agent, dir, state: inspect(dir) });
+  }
+  return plan;
+}
 
 /** 'missing' | 'link' | 'ours' | 'other' */
 function inspect(dir) {
@@ -85,10 +108,7 @@ function refuse(dir, state) {
 }
 
 function install(app) {
-  const plan = chosenAgents(app).map((agent) => {
-    const dir = targetOf(app, agent);
-    return { agent, dir, state: inspect(dir) };
-  });
+  const plan = planFor(app);
   // All or nothing: check every target before writing any.
   for (const p of plan) if (p.state === 'link' || p.state === 'other') throw refuse(p.dir, p.state);
 
@@ -105,10 +125,7 @@ function install(app) {
 }
 
 function uninstall(app) {
-  const plan = chosenAgents(app).map((agent) => {
-    const dir = targetOf(app, agent);
-    return { agent, dir, state: inspect(dir) };
-  });
+  const plan = planFor(app);
   for (const p of plan) if (p.state === 'link' || p.state === 'other') throw refuse(p.dir, p.state);
 
   const removed = [];

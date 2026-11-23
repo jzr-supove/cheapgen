@@ -16,7 +16,7 @@ const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: 
 const REQUEST_PROPERTIES = {
   model: str('Model id from the `models` tool, e.g. seedance-2.0-mini or seedream-5.5.'),
   prompt: str('What to generate. Needed before the quote can be used with `run`.'),
-  image: str('First frame for image-to-video: an https URL or a local file path.'),
+  image: str('First frame for image-to-video: an https URL or an absolute local file path.'),
   resolution: str('Video resolution: 480p, 720p, 1080p or 4k (only some models). Default 720p.'),
   size: str('Image size, e.g. 1K, 2K or 4K. Default 1K, or the model\'s smallest.'),
   duration: { type: 'number', description: 'Video length in seconds. Default 5.' },
@@ -143,10 +143,23 @@ function requestArgs(a) {
   return args;
 }
 
-/** Where results are saved: <cwd>/cheapgen-out, or <home>/cheapgen-out when the server runs at a filesystem root. */
+/** True when `dir` is `parent` or inside it. */
+function isInside(dir, parent) {
+  const rel = path.relative(path.resolve(parent), path.resolve(dir));
+  return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
+}
+
+/**
+ * Where results are saved: <cwd>/cheapgen-out, or <home>/cheapgen-out when the server runs at a
+ * filesystem root or inside a plugin's own folder (some apps start plugin servers there, and that
+ * folder is replaced when the plugin updates).
+ */
 function downloadDir(io) {
   const cwd = path.resolve(io.cwd);
-  return path.join(path.parse(cwd).root === cwd ? io.homedir : cwd, 'cheapgen-out');
+  const pluginRoots = [io.env?.PLUGIN_ROOT, io.env?.CLAUDE_PLUGIN_ROOT, io.env?.CURSOR_PLUGIN_ROOT]
+    .filter((p) => typeof p === 'string' && p);
+  const useHome = path.parse(cwd).root === cwd || pluginRoots.some((root) => isInside(cwd, root));
+  return path.join(useHome ? io.homedir : cwd, 'cheapgen-out');
 }
 
 // ---------------------------------------------------------------------------------------------

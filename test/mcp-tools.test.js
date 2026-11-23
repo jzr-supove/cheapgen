@@ -319,6 +319,21 @@ describe('wait_job', () => {
     assert.ok(r.structuredContent.outputs.length > 0, 'result URLs are returned too');
   });
 
+  for (const variable of ['PLUGIN_ROOT', 'CLAUDE_PLUGIN_ROOT', 'CURSOR_PLUGIN_ROOT']) {
+    test(`started inside a plugin folder (${variable}), files go to <home>/cheapgen-out, not the plugin cache`, async (t) => {
+      const h = await startMcp(t, { env: keysFor('kie'), routes: routesFor({ kie: { states: ['success'] } }) });
+      h.io.env[variable] = h.e.cwd;
+      await h.useLegacy();
+      const r = await h.call('wait_job', { job: 'kie:task_kie_001' });
+      assert.notEqual(r.isError, true, JSON.stringify(r));
+      assert.ok(r.structuredContent.files.length > 0);
+      for (const f of r.structuredContent.files) {
+        assert.ok(path.isAbsolute(f), f);
+        assert.ok(path.resolve(f).startsWith(path.join(h.e.home, 'cheapgen-out')), `${f} is under the home folder`);
+      }
+    });
+  }
+
   test('a job that failed is reported as an error with the CLI code', async (t) => {
     const h = await startMcp(t, { env: keysFor('kie'), routes: routesFor({ kie: { states: ['fail'] } }) });
     await h.useLegacy();

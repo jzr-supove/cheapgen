@@ -8,6 +8,10 @@ description: Generate AI videos (Seedance 2.0 / 2.5) and images (Seedream 5, Nan
 `cheapgen` is a CLI that prices a request on every provider and sends it to the cheapest
 connected one. Every real run spends the user's money, so follow these rules exactly.
 
+If the `cheapgen` command isn't found (for example when it came with a plugin), run it as
+`npx -y cheapgen@latest` with the same arguments. If cheapgen's MCP tools are available (`quote`,
+`run`, `wait_job` and others), you can use them instead; the same rules apply.
+
 ## Rules
 
 1. **Quote before every run.** Run `cheapgen quote <model> [params] --json` and tell the user

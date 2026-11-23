@@ -427,3 +427,66 @@ describe('help and isolation', () => {
     assert.equal(e.calls.length, 0);
   });
 });
+
+describe('GitHub Copilot and OpenCode', () => {
+  test('--agent copilot installs into ~/.copilot/skills', async (t) => {
+    const e = createEnvironment(t);
+    const r = await e.run(['skill', 'install', '--agent', 'copilot', '--json']);
+    assert.equal(r.code, 0, text(r));
+    const dir = path.join(e.home, '.copilot', 'skills', 'cheapgen');
+    assertIdenticalToBundled(dir);
+    assert.deepEqual(r.json.installed.map((x) => x.agent), ['copilot']);
+    assert.equal(normPath(r.json.installed[0].path), normPath(dir));
+  });
+
+  test('--agent copilot --project installs into .github/skills, which VS Code reads', async (t) => {
+    const e = createEnvironment(t);
+    const r = await e.run(['skill', 'install', '--agent', 'copilot', '--project', '--json']);
+    assert.equal(r.code, 0, text(r));
+    assertIdenticalToBundled(path.join(e.cwd, '.github', 'skills', 'cheapgen'));
+    assert.deepEqual(snapshot(e.home), []);
+  });
+
+  test('--agent opencode uses the shared ~/.agents/skills folder that OpenCode reads', async (t) => {
+    const e = createEnvironment(t);
+    const r = await e.run(['skill', 'install', '--agent', 'opencode', '--json']);
+    assert.equal(r.code, 0, text(r));
+    assertIdenticalToBundled(dest(e.home, 'codex'));
+    assert.deepEqual(r.json.installed.map((x) => x.agent), ['opencode']);
+  });
+
+  test('codex and opencode share one folder, so it is written once', async (t) => {
+    const e = createEnvironment(t);
+    const r = await e.run(['skill', 'install', '--agent', 'codex,opencode', '--json']);
+    assert.equal(r.code, 0, text(r));
+    assert.equal(r.json.installed.length, 1);
+    assert.equal(normPath(r.json.installed[0].path), normPath(dest(e.home, 'codex')));
+  });
+
+  test('detection: ~/.copilot means Copilot, ~/.config/opencode means OpenCode', async (t) => {
+    const e = createEnvironment(t);
+    mk(e.home, '.copilot');
+    mk(e.home, '.config', 'opencode');
+    const r = await e.run(['skill', 'install', '--json']);
+    assert.equal(r.code, 0, text(r));
+    assertIdenticalToBundled(path.join(e.home, '.copilot', 'skills', 'cheapgen'));
+    assertIdenticalToBundled(dest(e.home, 'codex'));
+    assert.deepEqual(r.json.installed.map((x) => x.agent).sort(), ['copilot', 'opencode']);
+  });
+
+  test('uninstall --agent copilot removes only the Copilot copy', async (t) => {
+    const e = createEnvironment(t);
+    assert.equal((await e.run(['skill', 'install', '--agent', 'copilot,claude'])).code, 0);
+    const r = await e.run(['skill', 'uninstall', '--agent', 'copilot', '--json']);
+    assert.equal(r.code, 0, text(r));
+    assert.ok(!exists(e.home, '.copilot', 'skills', 'cheapgen'));
+    assert.ok(exists(dest(e.home, 'claude')));
+  });
+
+  test('an unknown agent names all five choices', async (t) => {
+    const e = createEnvironment(t);
+    const r = await e.run(['skill', 'install', '--agent', 'nope']);
+    assert.equal(r.code, 2);
+    for (const a of ['claude', 'codex', 'cursor', 'copilot', 'opencode']) assert.match(text(r), new RegExp(a));
+  });
+});

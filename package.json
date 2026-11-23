@@ -2,7 +2,8 @@
   "name": "cheapgen",
   "version": "0.1.1",
   "description": "Send each AI video or image generation request to the cheapest connected provider (Kie, Replicate, WaveSpeed, fal).",
-  "keywords": ["ai", "video", "image", "generation", "cli", "seedance", "seedream", "kie", "replicate", "wavespeed", "fal", "claude-code"],
+  "keywords": ["ai", "video", "image", "generation", "cli", "seedance", "seedream", "kie", "replicate", "wavespeed", "fal", "claude-code", "mcp", "mcp-server",
+    "agent-skills", "codex", "github-copilot", "cursor"],
   "license": "MIT",
   "author": "jzr-supove (https://github.com/jzr-supove)",
   "repository": {

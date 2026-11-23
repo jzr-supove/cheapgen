@@ -1,0 +1,20 @@
+{
+  "name": "cheapgen",
+  "interface": {
+    "displayName": "cheapgen"
+  },
+  "plugins": [
+    {
+      "name": "cheapgen",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

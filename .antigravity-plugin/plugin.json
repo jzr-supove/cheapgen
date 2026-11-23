@@ -1,0 +1,22 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "cheapgen",
+  "displayName": "cheapgen",
+  "description": "Sends each AI video or image generation to the cheapest provider you have a key for (Kie, Replicate, WaveSpeed, fal). Quotes first and asks before spending.",
+  "version": "0.1.1",
+  "author": {
+    "name": "jzr-supove",
+    "url": "https://github.com/jzr-supove"
+  },
+  "homepage": "https://github.com/jzr-supove/cheapgen",
+  "repository": "https://github.com/jzr-supove/cheapgen",
+  "license": "MIT",
+  "keywords": [
+    "ai-video",
+    "ai-image",
+    "generation",
+    "seedance",
+    "mcp",
+    "pricing"
+  ]
+}

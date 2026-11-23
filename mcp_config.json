@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "cheapgen": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "cheapgen@latest",
+        "mcp"
+      ]
+    }
+  }
+}
